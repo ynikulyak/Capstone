@@ -30,10 +30,10 @@ public class CategoriesRestController {
    }
    
    @GetMapping("/api/categories/v1/")
-   public List<Category> getAllAirports() {
+   public List<Category> getAllCategories() {
 
-      List<Category> airports = categoriesService.getAll();
+      List<Category> categories = categoriesService.getAllCat();
       
-      return airports;
+      return categories;
    }
 }

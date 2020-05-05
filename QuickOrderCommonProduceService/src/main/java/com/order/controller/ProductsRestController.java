@@ -1,6 +1,5 @@
 package com.order.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,7 +20,7 @@ public class ProductsRestController {
    private ProductsService productsService;
 
    @GetMapping("/api/product/v1/{id}")
-   public Product getFlight(@PathVariable("id") String id) {
+   public Product getProduct(@PathVariable("id") String id) {
 
       Optional<Product> product = productsService.getById(Long.parseLong(id));
       // return airportInfo object in form of JSON if object present
@@ -36,5 +34,10 @@ public class ProductsRestController {
    @GetMapping("/api/products/v1/{categoryId}")
    public List<Product> getProductsFromCategory(@PathVariable("categoryId") String categoryId) {
       return productsService.getByCategory(Long.parseLong(categoryId));
+   }
+   
+   @GetMapping("/api/all_products/v1/")
+   public List<Product> getAllProducts() {
+      return productsService.getAllProducts();
    }
 }

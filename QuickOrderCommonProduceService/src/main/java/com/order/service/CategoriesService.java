@@ -24,7 +24,7 @@ public class CategoriesService {
 
    }
 
-   public List<Category> getAll() {
+   public List<Category> getAllCat() {
       return categoryRepository.getAllCategories();
    }
 }

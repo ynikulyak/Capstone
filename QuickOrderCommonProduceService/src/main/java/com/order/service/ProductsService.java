@@ -27,7 +27,7 @@ public class ProductsService {
       return productsRepository.getByCategory(categoryId);
    }
 
-   public List<Product> getAll() {
+   public List<Product> getAllProducts() {
       return productsRepository.getAll();
    }
 }
