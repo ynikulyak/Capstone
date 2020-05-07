@@ -27,7 +27,7 @@ public class Category {
       this.id = id;
    }
 
-   public String getTitle() {
+   public String getName() {
       return name;
    }
 
@@ -37,6 +37,6 @@ public class Category {
 
    @Override
    public String toString() {
-      return "Category [id=" + id + ", title=" + name + "]";
+      return "Category [id=" + id + ", name=" + name + "]";
    }
 }

@@ -17,7 +17,7 @@ public class UIRestController {
    @Autowired
    private ProductsAndCategoriesService productsAndCategoriesService;
 
-   @GetMapping("/productsAndCategoriesService/all_products/")
+   @GetMapping("/productsAndCategoriesServicе/all_products/")
    public List<Product> getProducts() {
       return productsAndCategoriesService.getAllProducts();
    }

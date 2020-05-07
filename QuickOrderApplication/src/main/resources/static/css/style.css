@@ -58,3 +58,8 @@ body {
   float: right;
   color: black;
 }
+
+.productThumbnail {
+	width: 30%;
+	height: 30%;
+}

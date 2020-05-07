@@ -13,7 +13,7 @@ public interface CategoriesRepository extends JpaRepository<Category, Long> {
    
    Optional<Category> findById(long id);
    
-   @Query("select a from Category a order by a.name")
+   @Query("select a from Category a order by a.id")
    List<Category> getAllCategories();
 }
  
