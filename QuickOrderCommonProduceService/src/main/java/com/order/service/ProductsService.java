@@ -56,6 +56,10 @@ public class ProductsService {
       return sizeRepository.findById(id);
    }
    
+   public List<Size> getAllSizes(){
+      return sizeRepository.findAllSizes();
+   }
+   
    public Optional<ProductSize> getPrice(long productId, long sizeId){
       return productSizeRepository.findPriceBySizeIdAndProductId(productId, sizeId);
    }
