@@ -17,17 +17,18 @@ public class ProductSize {
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "size_id")
    private Size size;
-   @Column(name="product_id")
-   private int productId;
+   @ManyToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name = "product_id")
+   private Product productId;
    private double price;
    
    public ProductSize() {}
 
-   public ProductSize(long id, Size size, int product_id, double price) {
+   public ProductSize(long id, Size size, Product productId, double price) {
       super();
       this.id = id;
       this.size = size;
-      this.productId = product_id;
+      this.productId = productId;
       this.price = price;
    }
 
@@ -47,12 +48,12 @@ public class ProductSize {
       this.size = size;
    }
 
-   public int getProduct_id() {
+   public Product getProductId() {
       return productId;
    }
 
-   public void setProduct_id(int product_id) {
-      this.productId = product_id;
+   public void setProductId(Product productId) {
+      this.productId = productId;
    }
 
    public double getPrice() {
@@ -65,6 +66,6 @@ public class ProductSize {
 
    @Override
    public String toString() {
-      return "ProductSize [id=" + id + ", size=" + size + ", product_id=" + productId + ", price=" + price + "]";
+      return "ProductSize [id=" + id + ", size=" + size + ", productId=" + productId + ", price=" + price + "]";
    }
 }

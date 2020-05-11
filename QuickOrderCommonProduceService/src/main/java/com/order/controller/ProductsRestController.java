@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.order.domain.Option;
 import com.order.domain.Product;
+import com.order.domain.ProductInfo;
 import com.order.domain.ProductOption;
 import com.order.domain.ProductSize;
 import com.order.domain.Size;
@@ -65,6 +66,11 @@ public class ProductsRestController {
       
    }
    
+   @GetMapping("/api/all_product_sizes/v1/{id}")
+   public List<ProductSize> getAllSizesByProdId(@PathVariable("id") long id ){
+      return productsService.getAllSizesByProductId(id);
+   }
+   
    @GetMapping("/api/option/v1/{id}")
    public Option getOption(@PathVariable ("id") long id) {
       Optional<Option> op = productsService.getOption(id);
@@ -99,4 +105,15 @@ public class ProductsRestController {
       }
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Attribute was not found: " + id);
    }
+   
+   @GetMapping("/api/productInfo/v1/{id}")
+   public ProductInfo getProductInfoById(@PathVariable("id") long id) {
+      Optional<ProductInfo> prInfo = productsService.getProductInfoById(id);
+      
+      if(prInfo.isPresent()) {
+         return prInfo.get();
+      }
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product info was not found: " + id);
+   }
+   
 }

@@ -4,16 +4,19 @@
 <div th:replace="header :: myheader"></div>
 </head>
 <body>
-   <nav th:insert="navbar :: navbar"></nav>
-   <div class="container">
-      <div class="row">
-      <div class="column" style="background-color: #aaa;" th:each="product : ${products}">
-         <h5 th:text="${product.name}"></h5>
-         <img th:src="@{'/image/' + ${product.thum}}" class="productThumbnail"/>
-         <p th:text="${product.description}"></p>
-      </div>
-         
-      </div>
-   </div>
+	<nav th:insert="navbar :: navbar"></nav>
+	<div class="container">
+		<div class="row">
+			<div class="column" style="background-color: #aaa;"
+				th:each="product : ${products}"
+				th:onclick="'window.location.href = \'' +  @{/item/{id}(id=${product.id})} + '\''">
+				<h5 th:text="${product.name}"></h5>
+				<img th:src="@{'/image/' + ${product.thum}}"
+					class="productThumbnail" />
+				<p th:text="${product.description}"></p>
+			</div>
+
+		</div>
+	</div>
 </body>
 </html>

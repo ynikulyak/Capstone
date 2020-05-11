@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.order.domain.Option;
 import com.order.domain.OptionRepository;
 import com.order.domain.Product;
+import com.order.domain.ProductInfo;
 import com.order.domain.ProductOption;
 import com.order.domain.ProductOptionRepository;
 import com.order.domain.ProductSize;
@@ -82,5 +83,24 @@ public class ProductsService {
    
    public Optional<ProductOption> getAtt(long id) {
       return productOptionRepository.findByAttributeValueId(id);
+   }
+   
+   public List<ProductSize> getAllSizesByProductId(long id){
+      return productSizeRepository.findAllById(id);
+   }
+   
+   public Optional<ProductInfo> getProductInfoById(long id){
+      Optional<Product> productInfo = productsRepository.findById(id);
+      if(!productInfo.isPresent()) {
+         log.warn("Product by {} id is not present", id);
+         return Optional.empty();
+      }
+      
+      Product product = productInfo.get();
+      
+      List<ProductSize> productSize = productSizeRepository.findAllById(id);
+      List<ProductOption> productOptions = productOptionRepository.findAll();
+      
+      return Optional.of(new ProductInfo(product, productSize, productOptions));
    }
 }
