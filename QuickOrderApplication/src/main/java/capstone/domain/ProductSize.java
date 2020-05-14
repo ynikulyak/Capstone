@@ -7,6 +7,6 @@ public class ProductSize {
    
    public long id;
    public Size size;
-   public Product productId;
+   public Product product;
    public double price;
 }

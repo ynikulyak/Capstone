@@ -7,8 +7,7 @@ import capstone.domain.ProductOption;
 import capstone.domain.ProductSize;
 
 public class ProductInfo {
-   Product product;
-   List<ProductSize> productSizesPrice;
-   List<ProductOption> options;
-
-}
+   public Product product;
+   public List<ProductSize> productSizesPrice;
+   public List<ProductOption> options; 
+ }

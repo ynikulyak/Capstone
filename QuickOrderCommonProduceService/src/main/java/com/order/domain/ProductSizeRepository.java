@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductSizeRepository extends JpaRepository<ProductSize, Long> {
    
-   @Query("select p from ProductSize p where p.size.id = :sizeId and p.product.id = :productId")
+   @Query("select ps from ProductSize ps where ps.size.id = :sizeId and ps.product.id = :productId")
    Optional<ProductSize> findPriceBySizeIdAndProductId(@Param("productId") long productId, @Param("sizeId") long sizeId);
    
-   @Query("select p from ProductSize p where p.product.id = :id")
-   List<ProductSize> findAllById(long id);
+   @Query("select ps from ProductSize ps where ps.product.id = :id")
+   List<ProductSize> findAllById(@Param("id") long id);
 
 }

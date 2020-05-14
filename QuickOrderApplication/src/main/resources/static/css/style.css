@@ -39,7 +39,7 @@ body {
 /* On screens that are 600px wide or less, make the columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 600px) {
 	.column {
-		width: 100%;
+		width: 90%;
 	}
 }
 
@@ -62,4 +62,32 @@ body {
 .productThumbnail {
 	width: 30%;
 	height: 30%;
+}
+
+.card-img-top {
+	width: 20%;
+	height: 20%;
+	color: blue;;
+}
+
+#item {
+	width: 70%;
+	margin: auto;
+	margin-top: 3%;
+}
+
+#item img {
+	float: right;
+}
+
+#item p, #item h5 {
+	display: block;
+}
+
+fieldset {
+	display: inline-grid;
+}
+
+#choice {
+	margin-right: 0.5%;
 }

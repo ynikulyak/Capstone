@@ -1,5 +1,6 @@
 package com.order.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 public class ProductOption {
    
    @Id
+   @Column(name ="attribute_value_id")
    private long id;
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "attribute_id")

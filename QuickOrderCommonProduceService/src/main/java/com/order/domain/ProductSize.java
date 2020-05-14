@@ -1,6 +1,5 @@
 package com.order.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -9,7 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Sizes")
+@Table(name="Product_sizes")
 public class ProductSize {
    
    @Id
@@ -19,7 +18,7 @@ public class ProductSize {
    private Size size;
    @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "product_id")
-   private Product productId;
+   private Product product;
    private double price;
    
    public ProductSize() {}
@@ -28,7 +27,7 @@ public class ProductSize {
       super();
       this.id = id;
       this.size = size;
-      this.productId = productId;
+      this.product = productId;
       this.price = price;
    }
 
@@ -48,12 +47,12 @@ public class ProductSize {
       this.size = size;
    }
 
-   public Product getProductId() {
-      return productId;
+   public Product getProduct() {
+      return product;
    }
 
-   public void setProductId(Product productId) {
-      this.productId = productId;
+   public void setProduct(Product product) {
+      this.product = product;
    }
 
    public double getPrice() {
@@ -66,6 +65,6 @@ public class ProductSize {
 
    @Override
    public String toString() {
-      return "ProductSize [id=" + id + ", size=" + size + ", productId=" + productId + ", price=" + price + "]";
+      return "ProductSize [id=" + id + ", size=" + size + ", productId=" + product + ", price=" + price + "]";
    }
 }

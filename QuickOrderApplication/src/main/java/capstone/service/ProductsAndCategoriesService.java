@@ -1,7 +1,9 @@
 package capstone.service;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import capstone.domain.Category;
 import capstone.domain.Product;
+import capstone.domain.ProductInfo;
 
 
 @Service
@@ -24,6 +27,7 @@ public class ProductsAndCategoriesService {
    private String allProductsUrl;
    private String productByProductIdUrl;
    private String productsByCategoryIdUrl;
+   private String productInfoUrl;
 
    public ProductsAndCategoriesService(@Value("${pacs.baseurl}") String baseUrl) {
       this.restTemplate = new RestTemplate();
@@ -32,6 +36,7 @@ public class ProductsAndCategoriesService {
       this.allProductsUrl = baseUrl + "/api/all_products/v1/";
       this.productByProductIdUrl = baseUrl + "/api/product/v1/";
       this.productsByCategoryIdUrl = baseUrl + "/api/products/v1/";
+      this.productInfoUrl = baseUrl + "/api/productInfo/v1/";
    }
 
    public List<Category> getCategories() {
@@ -70,5 +75,13 @@ public class ProductsAndCategoriesService {
       ResponseEntity<Product[]> response = restTemplate.getForEntity(allProductsUrl, Product[].class);
       log.info("Status code from PACS server, products:" + allProductsUrl + " :" + response.getStatusCodeValue());
       return Arrays.asList(response.getBody());
+   }
+   
+   public ProductInfo getProductInfo(long id) {
+      String url = productInfoUrl + id;
+      log.info("Fetch JSON from " + url);
+      ResponseEntity<ProductInfo> response = restTemplate.getForEntity(url, ProductInfo.class);
+      log.info("Status code from PACS server, productInfo: " + response.getStatusCodeValue());
+      return response.getBody();
    }
 }

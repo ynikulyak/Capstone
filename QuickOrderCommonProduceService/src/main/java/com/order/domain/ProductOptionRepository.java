@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Repository
 public interface ProductOptionRepository extends JpaRepository<ProductOption, Long> {
    
-   @Query("select p from ProductOption p where p.option.id = :id")
+   @Query("select p from ProductOption p where p.attribute.id = :id")
    List<ProductOption> findByOptionId(@PathVariable("id") long id);
    
    @Query("select op from ProductOption op")

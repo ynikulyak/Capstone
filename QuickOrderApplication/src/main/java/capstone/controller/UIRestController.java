@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import capstone.domain.Category;
 import capstone.domain.Product;
+import capstone.domain.ProductInfo;
 import capstone.service.ProductsAndCategoriesService;
 
 @RestController
@@ -40,5 +41,10 @@ public class UIRestController {
    @GetMapping("/productsAndCategoriesService/category/{id}")
    public Category getCategoryById(@PathVariable("id") String id) {
       return productsAndCategoriesService.getCategory(id);
+   }
+   
+   @GetMapping("/productsAndCtegoriesService/item/{id}")
+   public ProductInfo getProductInfo(@PathVariable ("id") long id) {
+      return productsAndCategoriesService.getProductInfo(id);
    }
 }
