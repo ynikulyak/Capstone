@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `Products` (
   `category_id` INT(11) NOT NULL,
   `name` VARCHAR(30) NOT NULL,
   `description` TEXT,
-  `thumb` VARCHAR(100),
+  `thum` VARCHAR(100),
   `full_image` VARCHAR(100),
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`),
