@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.com">
 <head>
-<div th:replace="header :: myheader"></div>
+    <div th:replace="header :: myheader"></div>
 </head>
 <body>
-	<nav th:insert="navbar :: navbar"></nav>
-	<div class="card" id="item">
-		<img class="card-img-top"
-			th:src="@{'/image/' + ${productInfo.product.thum}}"
-			alt="Card image cap">
-		<h5 class="card-title" th:text="${productInfo.product.name}"></h5>
-		<p class="card-text" th:text="${productInfo.product.description}"></p>
-		<div class="card-body">
+<nav th:insert="navbar :: navbar"></nav>
+<div class="card product-view" id="item">
+    <img class="card-img-top"
+         th:src="@{'/image/' + ${productInfo.product.thum}}"
+         alt="Card image cap">
+    <h5 class="card-title" th:text="${productInfo.product.name}"></h5>
+    <p class="card-text" th:text="${productInfo.product.description}"></p>
+    <div class="card-body">
 
-			<ul class="list-group list-group-flush" th:each="attr : ${addOns}">
-				<li class="list-group-item" th:text="${attr}" ></li>
-				<li class="list-group-item">
-				<fieldset th:each="item : ${map.get(attr)}">
-					<div class="form-check" id="choice" th:each="name : ${item}">
-						<input class="form-check-input" type="checkbox" value=""
-							id="invalidCheck2"> <label class="form-check-label"
-							for="invalidCheck2" th:text="${name}"> </label>
-				</div>
-					</fieldset>
-				</li>
+        <ul class="list-group list-group-flush" th:each="attr : ${addOns}">
+            <li class="list-group-item" th:text="${attr}"></li>
+            <li class="list-group-item">
+                <fieldset th:each="item : ${map.get(attr)}">
+                    <div class="form-check" id="choice" th:each="name : ${item}">
+                        <input class="form-check-input" type="checkbox" value=""
+                               id="invalidCheck2">
+                        <label class="form-check-label"
+                               for="invalidCheck2" th:text="${name}"> </label>
+                    </div>
+                </fieldset>
+            </li>
 
-			</ul>
-			<div class="card-body">
-				<a href="#" class="card-link">Card link</a> <a href="#"
-					class="card-link">Another link</a>
-			</div>
-		</div>
+        </ul>
+        <div class="card-body">
+            <a href="#" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>
+        </div>
+    </div>
 
-	</div>
+</div>
 </body>
 </html>
