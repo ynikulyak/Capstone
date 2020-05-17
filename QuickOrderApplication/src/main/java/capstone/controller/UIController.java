@@ -3,6 +3,7 @@ package capstone.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,79 +23,65 @@ import capstone.service.ProductsAndCategoriesService;
 
 @Controller
 public class UIController {
-   
-   private static final Logger log = Logger.getLogger(UIController.class);
 
-   @Autowired
-   private Environment env;
+    private static final Logger log = Logger.getLogger(UIController.class);
 
-   @Autowired
-   private ProductsAndCategoriesService productsAndCategoriesService;
+    @Autowired
+    private Environment env;
 
-   private void addStandardAttributes(Model model) {
-      model.addAttribute("web_static_prefix", env.getProperty("web.static.prefix", ""));
-   }
-   
-   @GetMapping("/index")
-   public String getIndexPage(Model model) {
-      addStandardAttributes(model);
+    @Autowired
+    private ProductsAndCategoriesService productsAndCategoriesService;
 
-      //takes every row in categories table, create category object, put in list, put
-      //list in a model and display by html
-      Iterable<Category> categories = productsAndCategoriesService.getCategories();
-      model.addAttribute("categories", categories);
-      return "index";
-   }
-   
-   @GetMapping("/products/{id}")
-   public String getProductsByCategoryId(@PathVariable("id") String id, Model model) {
-      addStandardAttributes(model);
-      
-      //takes every row in product table with passed id, create product object, put in list, put
-      //list in a model and display by html
-      Iterable<Product> products = productsAndCategoriesService.getProductsByCategoryId(id);
-      
-      model.addAttribute("products", products);  
-      return "products";
-   }
-   
-   @GetMapping("/item/{id}")
-   public String getItemByProductId(@PathVariable ("id") Long id, Model model) {
-      addStandardAttributes(model);
+    private void addStandardAttributes(Model model) {
+        model.addAttribute("web_static_prefix", env.getProperty("web.static.prefix", ""));
+    }
 
-      ProductInfo prInfo = productsAndCategoriesService.getProductInfo(id);
-      log.info(String.format("Product sizes: %s", prInfo.productSizesPrice));
-      
-      
-      
-      model.addAttribute("productInfo", prInfo);
-      
-      Map<String, ArrayList<String>> names = new HashMap<>();
-      
-      for(ProductOption p : prInfo.options) {
-         if(names.get(p.attribute.name) == null) {
-            names.put(p.attribute.name, new ArrayList<String>());
-         }
-         names.get(p.attribute.name).add(p.attribute_value_name);
-      }
-      
-      model.addAttribute("map", names);
-      
-      Set<String> names2 = new LinkedHashSet<String>();
-      
-      for(ProductOption p : prInfo.options) {
-         names2.add(p.attribute.name);
-      }
-      
-      model.addAttribute("addOns", names2);
-      
-      Map<String, Double> prices = new HashMap<>();
-      for(ProductOption p : prInfo.options) {
-         prices.put(p.attribute_value_name, p.price);
-      }
-      
-      model.addAttribute("price", prices);      
-      
-      return "item";
-   }
+    @GetMapping("/index")
+    public String getIndexPage(Model model) {
+        addStandardAttributes(model);
+
+        //takes every row in categories table, create category object, put in list, put
+        //list in a model and display by html
+        Iterable<Category> categories = productsAndCategoriesService.getCategories();
+        model.addAttribute("categories", categories);
+        return "index";
+    }
+
+    @GetMapping("/products/{id}")
+    public String getProductsByCategoryId(@PathVariable("id") String id, Model model) {
+        addStandardAttributes(model);
+
+        //takes every row in product table with passed id, create product object, put in list, put
+        //list in a model and display by html
+        Iterable<Product> products = productsAndCategoriesService.getProductsByCategoryId(id);
+
+        model.addAttribute("products", products);
+        return "products";
+    }
+
+    @GetMapping("/item/{id}")
+    public String getItemByProductId(@PathVariable("id") Long id, Model model) {
+        addStandardAttributes(model);
+
+        ProductInfo prInfo = productsAndCategoriesService.getProductInfo(id);
+        log.info(String.format("Product sizes: %s", prInfo.productSizesPrice));
+        model.addAttribute("productInfo", prInfo);
+
+        Map<String, List<ProductOption>> optionsMappedByAttributeName = new HashMap<>();
+        for (ProductOption productOption : prInfo.options) {
+            if (optionsMappedByAttributeName.get(productOption.attribute.name) == null) {
+                optionsMappedByAttributeName.put(productOption.attribute.name, new ArrayList<>());
+            }
+            optionsMappedByAttributeName.get(productOption.attribute.name).add(productOption);
+        }
+        model.addAttribute("optionsMappedByAttributeName", optionsMappedByAttributeName);
+
+        Set<String> attributeNames = new LinkedHashSet<>();
+        for (ProductOption option : prInfo.options) {
+            attributeNames.add(option.attribute.name);
+        }
+        model.addAttribute("attributeNames", attributeNames);
+
+        return "item";
+    }
 }

@@ -14,9 +14,9 @@ public interface ProductOptionRepository extends JpaRepository<ProductOption, Lo
    @Query("select p from ProductOption p where p.attribute.id = :id")
    List<ProductOption> findByOptionId(@PathVariable("id") long id);
    
-   @Query("select op from ProductOption op")
+   @Query("select op from ProductOption op order by op.attribute.name, op.attribute_value_name")
    List<ProductOption> findAll();
    
-   @Query("select p from ProductOption p where p.id = id")
+   @Query("select p from ProductOption p where p.id = id order by p.attribute_value_name")
    Optional<ProductOption> findByAttributeValueId(long id);
 }

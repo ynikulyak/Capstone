@@ -106,41 +106,41 @@ body {
 	float: left;
 }
 
-fieldset {
-	display: inline-grid;
-}
-
-#choice {
-   margin-left: 1rem;
-   border: 2px solid grey;
-   border-radius: 15%;
-   border-style: ridge;
-   background-color: #e6ffff;
-}
-
-.price {
-	font-weight: bold;
-	font-size: small;
-}
 
 #buttons {
 	float: right;
 }
 
-[type="radio"], [type="checkbox"] { 
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
 
 [type="radio"], [type="checkbox"] {
   cursor: pointer;
 }
 
-[type="checkbox"]:checked + label, [type="radio"]:checked + label  {
-   background-color: yellow;
-	margin-right: 0.5%;
+fieldset {
+	display: inline-grid;
+}
+
+.choice {
+   margin: 0.1rem 0 0 0.3rem;
+   border: 2px solid grey;
+   border-radius: 15%;
+   border-style: ridge;
+   background-color: #e6ffff;
+   cursor: pointer;
+   padding: 0.5rem;
+}
+
+.choice:hover {
+   background-color: #CCCC00;
+}
+
+.choice .form-check-label {
+   cursor: pointer;
+}
+
+.price {
+	font-weight: bold;
+	font-size: small;
 }
 
 #cart-count {
@@ -170,4 +170,9 @@ fieldset {
 .product-view {
   background-color: #aaa;
   padding: 10px;
+}
+
+.product-input-label {
+    margin-right: 0.4em;
+    padding-right: 1px;
 }
