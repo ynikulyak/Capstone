@@ -93,7 +93,14 @@ fieldset {
 }
 
 
+#cart-count {
+    font-size: 36px;
+    position:relative;
+}
 
+#cart-count span {
+    left: -20px;
+}
 
 
 
