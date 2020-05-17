@@ -43,6 +43,11 @@ body {
 	}
 }
 
+@viewport {
+  width: device-width ;
+  zoom: 1.0 ;
+}
+
 .logo {
 	font-family: 'Lobster', cursive;
 	font-size: 30px;
@@ -64,10 +69,31 @@ body {
 	height: 30%;
 }
 
-.card-img-top {
-	width: 20%;
-	height: 20%;
-	color: blue;;
+.card-img {
+	width: 40%;
+	height: 40%;
+}
+
+.card {
+	border-radius: 10%;
+	border: 6px solid grey;
+	border-style: ridge;
+}
+
+.top-stuff {
+	margin-left: auto ;
+   margin-right: auto ;
+   margin-top: 1rem;
+   width: 80%;
+}
+
+.top-stuff {
+	clear: both;
+}
+
+#addOns, #sizeOp {
+	font-weight: bold;
+	font-size: large;
 }
 
 #item {
@@ -77,11 +103,7 @@ body {
 }
 
 #item img {
-	float: right;
-}
-
-#item p, #item h5 {
-	display: block;
+	float: left;
 }
 
 fieldset {
@@ -89,19 +111,41 @@ fieldset {
 }
 
 #choice {
+   margin-left: 1rem;
+   border: 2px solid grey;
+   border-radius: 15%;
+   border-style: ridge;
+   background-color: #e6ffff;
+}
+
+.price {
+	font-weight: bold;
+	font-size: small;
+}
+
+#buttons {
+	float: right;
+}
+
+[type="radio"], [type="checkbox"] { 
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+[type="radio"], [type="checkbox"] {
+  cursor: pointer;
+}
+
+[type="checkbox"]:checked + label, [type="radio"]:checked + label  {
+   background-color: yellow;
 	margin-right: 0.5%;
 }
 
-
 #cart-count {
     font-size: 36px;
-    position:relative;
 }
-
-#cart-count span {
-    left: -20px;
-}
-
 
 
 .category-main-link {

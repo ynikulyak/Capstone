@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,8 @@ import capstone.service.ProductsAndCategoriesService;
 
 @Controller
 public class UIController {
+   
+   private static final Logger log = Logger.getLogger(UIController.class);
 
    @Autowired
    private Environment env;
@@ -60,6 +63,10 @@ public class UIController {
       addStandardAttributes(model);
 
       ProductInfo prInfo = productsAndCategoriesService.getProductInfo(id);
+      log.info(String.format("Product sizes: %s", prInfo.productSizesPrice));
+      
+      
+      
       model.addAttribute("productInfo", prInfo);
       
       Map<String, ArrayList<String>> names = new HashMap<>();
@@ -80,6 +87,14 @@ public class UIController {
       }
       
       model.addAttribute("addOns", names2);
+      
+      Map<String, Double> prices = new HashMap<>();
+      for(ProductOption p : prInfo.options) {
+         prices.put(p.attribute_value_name, p.price);
+      }
+      
+      model.addAttribute("price", prices);      
+      
       return "item";
    }
 }
