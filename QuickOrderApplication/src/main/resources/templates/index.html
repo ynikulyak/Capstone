@@ -7,7 +7,7 @@
 	<nav th:insert="navbar :: navbar"></nav>
 	<div class="container">
 		<div class="row">
-			<div class="column" style="background-color: #aaa;"
+			<div class="column category-main-link"
 				th:each="category : ${categories}"
 				th:onclick="'window.location.href = \'' +  @{/products/{id}(id=${category.id})} + '\''">
 				<h2 th:text="${category.name}"></h2>

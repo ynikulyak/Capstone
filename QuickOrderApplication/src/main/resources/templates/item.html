@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.com">
 <head>
-<div th:replace="header :: myheader"></div>
+    <div th:replace="header :: myheader"></div>
 </head>
 <body>
 	<nav th:insert="navbar :: navbar"></nav>
@@ -43,12 +43,12 @@
 
 			</ul>
 			<div class="card-body" id="buttons">
-				<a href="#" class="card-link">Back to Menu</a>
+				<a href="/index" class="card-link">Back to Menu</a>
 				<button type="reset" class="btn btn-warning">Cancel</button>
 				<button type="submit" class="btn btn-warning">Add to Cart</button>
 			</div>
 		</div>
 
-	</div>
+</div>
 </body>
 </html>

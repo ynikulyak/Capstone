@@ -140,4 +140,29 @@ fieldset {
 
 [type="checkbox"]:checked + label, [type="radio"]:checked + label  {
    background-color: yellow;
+	margin-right: 0.5%;
+}
+
+.category-main-link {
+  background-color: #aaa;
+}
+
+.category-main-link:hover {
+  cursor: pointer;
+  background-color: #CCCC00;
+}
+
+
+.product-main-link {
+    background-color: #aaa;
+}
+
+.product-main-link:hover {
+  cursor: pointer;
+  background-color: #CCCC00;
+}
+
+.product-view {
+  background-color: #aaa;
+  padding: 10px;
 }
