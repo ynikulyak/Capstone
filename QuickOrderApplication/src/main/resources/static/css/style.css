@@ -176,3 +176,13 @@ fieldset {
     margin-right: 0.4em;
     padding-right: 1px;
 }
+
+
+#div-qty {
+	float: right;
+	width: 50%;
+}
+#label-for-qty {
+	font-size: x-large;
+	margin-right: 2%;
+}

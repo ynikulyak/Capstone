@@ -14,6 +14,18 @@
         <p class="card-text in" th:text="${productInfo.product.description}"></p>
     </div>
     <div class="card-body">
+   <div class="input-group" id="div-qty">
+    <label class="form-check-label" id="label-for-qty">Quantity: </label>
+  <div class="input-group-prepend">
+    <button class="btn btn-outline-secondary" type="button">-</button>
+  </div>
+  <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button">+</button>
+  </div>
+</div>
+    </div>
+    <div class="card-body">
 
 
         <ul class="list-group list-group-flush" id="productSizes">
