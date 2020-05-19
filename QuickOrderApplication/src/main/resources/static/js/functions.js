@@ -1,16 +1,22 @@
 console.log("Now: " + new Date());
-window.onload = function() {
+$(document).ready(function() {
 	var input = document.getElementById("item-qty");
 
 	document.getElementById("plus").onclick = function() {
-		input.value = parseInt(input.value, 10) + 1
+	    var current = parseInt(input.value, 10) || 1;
+	    current = current < 1 ? 1 : current;
+	    current = current > 9 ? 9 : current;
+		input.value = current + 1;
 	}
 
 	document.getElementById("minus").onclick = function() {
-		if (input.value == 1) {
+	    var current = parseInt(input.value, 10) || 1;
+        current = current < 1 ? 1 : current;
+
+		if (current <= 1) {
 			return;
 		} else {
-			input.value = parseInt(input.value, 10) - 1
+			input.value = current - 1
 		}
 	}
-}
+});
