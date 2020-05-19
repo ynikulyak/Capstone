@@ -39,7 +39,7 @@
             <li class="list-group-item">
                 <fieldset th:each="object : ${productInfo.productSizesPrice}">
                     <div class="form-check form-check-inline choice" th:data="${object.id}">
-                        <label class="form-check-label product-input-label"
+                        <label class="form-check-label product-input-label product-size-label"
                                th:data="${object.price}"
                                th:dataId="${object.id}"
                                th:for="'sizeRadio' + ${object.id}"
@@ -47,7 +47,7 @@
                         <input type="radio" class="form-check-input"
                                name="productSizeChoice"
                                th:id="'sizeRadio' + ${object.id}"
-                               th:value=" ${object.id}"/>
+                               th:value="${object.id}"/>
                     </div>
                 </fieldset>
             </li>
@@ -75,8 +75,8 @@
 
         <div class="card-body" id="buttons">
             <a href="/index" class="card-link">Back to Menu</a>
-            <button type="reset" class="btn btn-warning">Cancel</button>
-            <button type="submit" class="btn btn-warning">Add to Cart</button>
+            <button type="reset" class="btn btn-warning" onclick="shoppingCart.resetForm();return false;">Cancel</button>
+            <button type="button" class="btn btn-warning" onclick="shoppingCart.addProduct();return false;">Add to Cart</button>
         </div>
     </div>
 

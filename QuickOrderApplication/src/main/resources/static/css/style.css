@@ -131,11 +131,15 @@ fieldset {
 }
 
 .choice:hover {
-   background-color: #CCCC00;
+   background-color: #FFFF66;
 }
 
 .choice .form-check-label {
    cursor: pointer;
+}
+
+.chosen {
+    background-color: #0099FF !important;
 }
 
 .price {
@@ -182,6 +186,7 @@ fieldset {
 	float: right;
 	width: 50%;
 }
+
 #label-for-qty {
 	font-size: x-large;
 	margin-right: 2%;
