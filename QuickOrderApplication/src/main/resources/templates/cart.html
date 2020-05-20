@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="www.thymeleaf.com">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<div th:replace="header :: myheader"></div>
 </head>
 <body>
-<h1>Cart</h1>
+
+	<div class="card">
+	<div class="card-body">
+		<h3>Your Order</h3>
+		</div>
+		
+
+		<div class="card-body">
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item"></li>
+			</ul>
+		</div>
+		<div class="card-body">
+		<p>Subtotal</p>
+		<p>Tax</p>
+		</div>
+		<div class="card-body">
+		<button type="button" class="btn btn-success">Checkout</button>
+		</div>
+		
+	</div>
+
 </body>
 </html>

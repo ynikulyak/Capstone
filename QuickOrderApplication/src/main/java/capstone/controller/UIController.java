@@ -84,4 +84,9 @@ public class UIController {
 
         return "item";
     }
+    
+    @GetMapping("/cart")
+    public String getCart(Model model) {
+       return "cart";
+    }
 }
