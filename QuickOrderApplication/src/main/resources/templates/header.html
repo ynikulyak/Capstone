@@ -34,8 +34,8 @@
 
 
     <link rel="stylesheet" th:href="@{${web_static_prefix} + '/css/style.css'}" />
-    <script th:src="@{${web_static_prefix} + '/js/functions.js'}"></script>
-    <script th:src="@{${web_static_prefix} + '/js/cart.js'}"></script>
+    <script th:src="@{${web_static_prefix} + '/js/functions.js?now=' + ${current_time_millis}}"></script>
+    <script th:src="@{${web_static_prefix} + '/js/cart.js?now=' + ${current_time_millis}}"></script>
 
 
     <title>Welcome!</title>

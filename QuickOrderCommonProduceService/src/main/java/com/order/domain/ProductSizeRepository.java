@@ -16,5 +16,4 @@ public interface ProductSizeRepository extends JpaRepository<ProductSize, Long> 
    
    @Query("select ps from ProductSize ps where ps.product.id = :id order by ps.size.volume")
    List<ProductSize> findAllById(@Param("id") long id);
-
 }

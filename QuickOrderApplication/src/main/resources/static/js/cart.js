@@ -1,3 +1,6 @@
+// Cart class and functions.
+console.log("cart.js, loaded: " + new Date().getTime());
+
 class ShoppingCart {
 
   #contents = {}; // Key value store of selected products.
@@ -20,11 +23,24 @@ class ShoppingCart {
   updateLink() {
     let keys = Object.keys(this.#contents);
     let number = 0;
+    let q = 0;
+    let cartUrlParameters = [];
     for (let i in keys) {
-        number += parseInt(this.#contents[keys[i]].q, 10);
+        cartUrlParameters.push(keys[i]);
+        cartUrlParameters.push(':');
+
+        let item = this.#contents[keys[i]];
+        q = parseInt(item.q, 10);
+        number += q;
+        cartUrlParameters.push(q);
+        cartUrlParameters.push(':');
+        cartUrlParameters.push(item.o.join(','));
+        cartUrlParameters.push(';');
     }
-    console.log("Displaying the cart, items: " + number);
+    let url = '/cart?order=' + cartUrlParameters.join('');
+    console.log("Displaying the cart, items: " + number + ', url: ' + url );
     $('#cart-count').html(number > 0 ? number : '');
+    $('#cart-icon').attr('href', url);
   }
 
   save() {
@@ -39,11 +55,16 @@ class ShoppingCart {
   }
 
   restoreOptions() {
+     let productId = this.getProductId();
+     if (productId == 0) {
+        console.log('Not a cart page.');
+        return;
+     }
+
      $('input[type=checkbox]').prop("checked", false);
      $('input[type=checkbox]').parent().removeClass('chosen');
 
      let mainSizeSelector = 'input[name="productSizeChoice"]';
-     let productId = this.getProductId();
      let productSizeId = $(mainSizeSelector + ':checked').val() ||
                               $(mainSizeSelector + ':first').val();
      let key = productId + '_' + productSizeId;
@@ -103,7 +124,8 @@ class ShoppingCart {
   }
 
   getProductId() {
-    return this.getCurrentUrl().match(/item\/([0-9]+)/i)[1] || 0;
+    let match = this.getCurrentUrl().match(/.*\/item\/([0-9]+).*/i);
+    return match && match.length > 0 ? (match[1] || 0) : 0;
   }
 
   getCurrentUrl() {
@@ -113,11 +135,7 @@ class ShoppingCart {
 
 const shoppingCart = new ShoppingCart();
 
-$(document).ready(function() {
-    shoppingCart.restore();
-    shoppingCart.restoreOptions();
-    shoppingCart.updateLink();
-
+function initializeCartPage() {
     $('input[name="productSizeChoice"]').change(function () {
         $('input[name="productSizeChoice"]').each(function(index, element) {
             $(element).parent().removeClass('chosen');
@@ -133,4 +151,34 @@ $(document).ready(function() {
             $(this).parent().removeClass('chosen');
         }
     });
+
+	var input = document.getElementById("item-qty");
+	if (!input) {
+	    return;
+	}
+
+	document.getElementById("plus").onclick = function() {
+	    var current = parseInt(input.value, 10) || 1;
+	    current = current < 1 ? 1 : current;
+	    current = current > 9 ? 9 : current;
+		input.value = current + 1;
+	}
+
+	document.getElementById("minus").onclick = function() {
+	    var current = parseInt(input.value, 10) || 1;
+        current = current < 1 ? 1 : current;
+		if (current <= 1) {
+			return;
+		} else {
+			input.value = current - 1
+		}
+	}
+}
+
+$(document).ready(function() {
+    shoppingCart.restore();
+    shoppingCart.restoreOptions();
+    shoppingCart.updateLink();
+
+    initializeCartPage();
 });

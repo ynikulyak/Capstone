@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Logger;
 
-import org.jboss.logging.Logger;
+import capstone.domain.Cart;
+import capstone.domain.CartItemIds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -20,11 +23,12 @@ import capstone.domain.Product;
 import capstone.domain.ProductInfo;
 import capstone.domain.ProductOption;
 import capstone.service.ProductsAndCategoriesService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UIController {
 
-    private static final Logger log = Logger.getLogger(UIController.class);
+    private static final Logger log = Logger.getLogger(UIController.class.getName());
 
     @Autowired
     private Environment env;
@@ -34,6 +38,7 @@ public class UIController {
 
     private void addStandardAttributes(Model model) {
         model.addAttribute("web_static_prefix", env.getProperty("web.static.prefix", ""));
+        model.addAttribute("current_time_millis", System.currentTimeMillis());
     }
 
     @GetMapping("/index")
@@ -84,9 +89,17 @@ public class UIController {
 
         return "item";
     }
-    
+
     @GetMapping("/cart")
-    public String getCart(Model model) {
-       return "cart";
+    public String getCart(@RequestParam("cart") String encodedCart, Model model) {
+        addStandardAttributes(model);
+        Optional<Cart> cart =
+                productsAndCategoriesService.getCart(CartItemIds.parse(encodedCart));
+        model.addAttribute("cartIsEmpty", !cart.isPresent());
+        if (cart.isPresent()) {
+            model.addAttribute("cart", cart);
+        }
+        return "cart";
     }
+
 }

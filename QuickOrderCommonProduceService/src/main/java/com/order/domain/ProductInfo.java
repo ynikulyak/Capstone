@@ -37,6 +37,4 @@ public class ProductInfo {
    public void setOptions(List<ProductOption> options) {
       this.options = options;
    }
-   
-   
 }
