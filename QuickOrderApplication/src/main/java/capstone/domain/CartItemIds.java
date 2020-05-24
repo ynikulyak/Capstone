@@ -22,27 +22,27 @@ public class CartItemIds {
 
     /**
      * Parses encoded cart in the given string.
-     * Order example: 1_1:5:10,8,7;1_2:2:11,13,5;5_9:2:3,2,1;5_8:1:14,11,10;
-     * Contains ;-separated product, chosen size, quantity and options:
-     * {productId}_{productSizeId}:{quantity}:{option1},{option2};
+     * Order URL example: http://localhost:8080/cart?cart=1_1.5.10.8.7!1_2.2.11.13.5!5_9.2.3.2.1!
+     * Contains !-separated product, chosen size, quantity and options:
+     * {productId}_{productSizeId}.{quantity}.{option1}.{option2}!
      *
      * @param encodedCart Encoded cart.
      * @return List of cart items.
      */
     public static List<CartItemIds> parse(String encodedCart) {
-        encodedCart = encodedCart != null ? encodedCart.trim().replaceAll(";$|^;", "") : "";
+        encodedCart = encodedCart != null ? encodedCart.trim().replaceAll("!$|^!", "") : "";
         if (encodedCart.isEmpty()) {
             return Collections.emptyList();
         }
-        String[] encodedItems = encodedCart.split(";");
+        String[] encodedItems = encodedCart.split("!");
         if (encodedItems.length == 0) {
             return Collections.emptyList();
         }
         List<CartItemIds> items = new ArrayList<>(encodedItems.length);
         for (String encodedItem : encodedItems) {
-            encodedItem = encodedItem.trim().replaceAll(":$|^:", "");
-            String[] parts = encodedItem.split(":");
-            if (parts.length != 3) {
+            encodedItem = encodedItem.trim().replaceAll("\\.$|^\\.", "");
+            String[] parts = encodedItem.split("\\.");
+            if (parts.length < 2) {
                 log.info("Wrong encoded cart item: " + encodedItem);
                 continue;
             }
@@ -53,10 +53,10 @@ public class CartItemIds {
                 cartItemIds.productSizeId = Long.parseLong(productIdParts[1]);
                 cartItemIds.quantity = Integer.parseInt(parts[1]);
                 cartItemIds.optionIds = new LinkedHashSet<>();
-                String[] optionIds = parts[2].split(",");
-                for (String optionIdAsString : optionIds) {
-                    if (optionIdAsString.trim().length() > 0) {
-                        cartItemIds.optionIds.add(Long.parseLong(optionIdAsString.trim()));
+                for (int i = 2; i < parts.length; i++) {
+                    String optionIdAsString = parts[i].trim();
+                    if (optionIdAsString.length() > 0) {
+                        cartItemIds.optionIds.add(Long.parseLong(optionIdAsString));
                     }
                 }
                 if (cartItemIds.productId > 0 && cartItemIds.productSizeId > 0 &&

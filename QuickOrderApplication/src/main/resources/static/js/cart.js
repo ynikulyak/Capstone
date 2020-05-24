@@ -24,24 +24,34 @@ class ShoppingCart {
     let keys = Object.keys(this.#contents);
     let number = 0;
     let q = 0;
-    let cartUrlParameters = [];
     for (let i in keys) {
-        cartUrlParameters.push(keys[i]);
-        cartUrlParameters.push(':');
-
         let item = this.#contents[keys[i]];
         q = parseInt(item.q, 10);
         number += q;
-        cartUrlParameters.push(q);
-        cartUrlParameters.push(':');
-        cartUrlParameters.push(item.o.join(','));
-        cartUrlParameters.push(';');
     }
-    let url = '/cart?order=' + cartUrlParameters.join('');
+    let url = this.createCartUrl();
     console.log("Displaying the cart, items: " + number + ', url: ' + url );
     $('#cart-count').html(number > 0 ? number : '');
     $('#cart-icon').attr('href', url);
   }
+
+  createCartUrl() {
+      let keys = Object.keys(this.#contents);
+      let q = 0;
+      let cartUrlParameters = [];
+      for (let i in keys) {
+          cartUrlParameters.push(keys[i]);
+          cartUrlParameters.push('.');
+
+          let item = this.#contents[keys[i]];
+          q = parseInt(item.q, 10);
+          cartUrlParameters.push(q);
+          cartUrlParameters.push('.');
+          cartUrlParameters.push(item.o.join('.'));
+          cartUrlParameters.push('!');
+      }
+      return '/cart?cart=' + encodeURIComponent(cartUrlParameters.join(''));
+    }
 
   save() {
     console.log("Saving the cart...");
@@ -116,7 +126,6 @@ class ShoppingCart {
     });
 
     let quantity = parseInt($('#item-qty').val(), 10);
-
     this.addCartEntry(productId, productSizeId, quantity, options);
     this.save();
 
@@ -130,6 +139,18 @@ class ShoppingCart {
 
   getCurrentUrl() {
     return window.location.href + '';
+  }
+
+  removeItem(productId, productSizeId, productTitle) {
+    if (!confirm('Do you want to remove the item from the order?')) {
+        return;
+    }
+    let key = productId + '_' + productSizeId;
+    console.log("Removing " + key + ", key exists: " + (!!this.#contents[key]) );
+    delete this.#contents[key];
+    this.save();
+
+    document.location = this.createCartUrl();
   }
 }
 

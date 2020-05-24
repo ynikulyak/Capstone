@@ -6,18 +6,15 @@ import java.util.List;
 public class Cart {
     public List<CartItem> items;
 
-    private volatile double subTotalCalculated = Double.NaN;
+    private volatile double subTotalCalculated = Double.NEGATIVE_INFINITY;
 
     public double getSubTotal() {
-        if (subTotalCalculated != Double.NaN) {
+        if (subTotalCalculated != Double.NEGATIVE_INFINITY) {
             return subTotalCalculated;
         }
         double subTotal = 0.0d;
         for (CartItem cartItem : items) {
-            subTotal += cartItem.quantity * cartItem.selectedSize.price;
-            for (ProductOption productOption : cartItem.selectedOptions) {
-                subTotal += productOption.price;
-            }
+            subTotal += cartItem.getPrice();
         }
         subTotalCalculated = subTotal;
         return subTotal;

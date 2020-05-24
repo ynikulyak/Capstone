@@ -5,6 +5,14 @@ import java.util.List;
 public class CartItem {
     public ProductInfo productInfo;
     public ProductSize selectedSize;
-    public int quantity;
     public List<ProductOption> selectedOptions;
+    public int quantity;
+
+    public double getPrice() {
+        double price = quantity * selectedSize.price;
+        for (ProductOption productOption : selectedOptions) {
+            price += productOption.price;
+        }
+        return price;
+    }
 }

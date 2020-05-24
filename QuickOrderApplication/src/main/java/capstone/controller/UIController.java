@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import capstone.domain.Cart;
 import capstone.domain.CartItemIds;
+import capstone.util.PriceFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -36,9 +37,13 @@ public class UIController {
     @Autowired
     private ProductsAndCategoriesService productsAndCategoriesService;
 
+    @Autowired
+    private PriceFormatter priceFormatter;
+
     private void addStandardAttributes(Model model) {
         model.addAttribute("web_static_prefix", env.getProperty("web.static.prefix", ""));
         model.addAttribute("current_time_millis", System.currentTimeMillis());
+        model.addAttribute("price_formatter", priceFormatter);
     }
 
     @GetMapping("/index")
@@ -97,7 +102,7 @@ public class UIController {
                 productsAndCategoriesService.getCart(CartItemIds.parse(encodedCart));
         model.addAttribute("cartIsEmpty", !cart.isPresent());
         if (cart.isPresent()) {
-            model.addAttribute("cart", cart);
+            model.addAttribute("cart", cart.get());
         }
         return "cart";
     }
