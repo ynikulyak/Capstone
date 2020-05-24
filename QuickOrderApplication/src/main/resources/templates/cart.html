@@ -11,7 +11,8 @@
         <h3>Your Order</h3>
 
         <div class="container" th:if="${cartIsEmpty}">
-            Cart is empty.
+            Cart is empty.<br/>
+            <button type="button" class="btn btn-primary align-bottom" onclick="document.location='/index';">Continue shopping</button>
         </div>
 
         <div th:unless="${cartIsEmpty}">
