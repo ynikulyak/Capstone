@@ -94,6 +94,7 @@ public class ProductsService {
     public List<ProductInfo> getProductInfosByIds(List<Long> ids) {
         List<Product> products = productsRepository.findAllById(ids);
         if (products.isEmpty()) {
+            log.info(String.format("Couldn't find orders by ids: %s", ids));
             return Collections.emptyList();
         }
         List<ProductOption> productOptions = productOptionRepository.findAll();

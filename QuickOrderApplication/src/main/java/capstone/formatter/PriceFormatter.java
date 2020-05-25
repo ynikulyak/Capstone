@@ -1,4 +1,4 @@
-package capstone.util;
+package capstone.formatter;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

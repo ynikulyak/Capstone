@@ -2,26 +2,22 @@ package capstone.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 import capstone.domain.Cart;
 import capstone.domain.CartItem;
 import capstone.domain.CartItemIds;
-import capstone.domain.PaymentData;
 import capstone.domain.ProductOption;
 import capstone.domain.ProductSize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,7 +25,9 @@ import capstone.domain.Category;
 import capstone.domain.Product;
 import capstone.domain.ProductInfo;
 
-
+/**
+ * Client service for products and categories.
+ */
 @Service
 public class ProductsAndCategoriesService {
 
@@ -126,7 +124,7 @@ public class ProductsAndCategoriesService {
         Map<Long, ProductInfo> productInfoMap = new HashMap<>();
         for (ProductInfo productInfo : productInfos) {
             productInfoMap.put(productInfo.product.id, productInfo);
-            for (ProductOption option  : productInfo.options) {
+            for (ProductOption option : productInfo.options) {
                 optionsMap.putIfAbsent(option.id, option);
             }
         }
@@ -163,9 +161,5 @@ public class ProductsAndCategoriesService {
             result.items.add(cartItem);
         }
         return Optional.of(result);
-    }
-
-    public String createOrder(Cart cart, PaymentData paymentData) {
-        return "hoho!";
     }
 }
