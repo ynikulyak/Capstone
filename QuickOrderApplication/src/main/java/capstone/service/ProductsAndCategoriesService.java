@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import capstone.domain.Cart;
 import capstone.domain.CartItem;
 import capstone.domain.CartItemIds;
+import capstone.domain.PaymentData;
 import capstone.domain.ProductOption;
 import capstone.domain.ProductSize;
 import org.slf4j.Logger;
@@ -162,5 +163,9 @@ public class ProductsAndCategoriesService {
             result.items.add(cartItem);
         }
         return Optional.of(result);
+    }
+
+    public String createOrder(Cart cart, PaymentData paymentData) {
+        return "hoho!";
     }
 }

@@ -4,28 +4,29 @@
     <div th:replace="header :: myheader"></div>
 </head>
 <body>
-<script src="https://js.stripe.com/v3/"></script>
 <nav th:insert="navbar :: navbar"></nav>
 <div class="card">
     <div class="card-body container">
         <h3>Your Order</h3>
 
         <div class="container" th:if="${cartIsEmpty}">
-            Cart is empty.<br/>
-            <button type="button" class="btn btn-primary align-bottom" onclick="document.location='/index';">Continue shopping</button>
+            Cart is empty.<br/><br/>
+            <button type="button" class="btn btn-primary align-bottom"
+                    onclick="document.location='/index';">Continue shopping
+            </button>
         </div>
 
         <div th:unless="${cartIsEmpty}">
             <!-- List of items -->
             <ul class="list-group list-group-striped list-group-hover">
                 <li class="list-group-item d-flex justify-content-between align-items-center"
-                    th:each="item: ${cart.items}"
-                >
+                    th:each="item: ${cart.items}">
                     <div class="container-fluid">
                         <h5 class="mb-1"
                             th:text="@{${item.productInfo.product.name} + ' ' + ${item.selectedSize.size.volume} + ' (' + ${item.productInfo.product.category.name} + ')' }"></h5>
                         <div class="container-fluid">
-                            <small class="badge badge-secondary cart-option" th:each="option : ${item.selectedOptions}">
+                            <small class="badge badge-secondary cart-option"
+                                   th:each="option : ${item.selectedOptions}">
                                 <span th:text="@{${option.attribute_value_name}}"></span>
                             </small>
                         </div>
@@ -72,8 +73,13 @@
                         </div>
                     </div>
                     <div class="col col-sm-4 text-right">
-                        <button type="button" class="btn btn-success align-bottom">Checkout</button>
-                        <button type="button" class="btn btn-primary align-bottom" onclick="document.location='/index';">Continue shopping</button>
+                        <button type="button" class="btn btn-success align-bottom"
+                                onclick="shoppingCart.proceedToCheckout();">
+                            Checkout
+                        </button>
+                        <button type="button" class="btn btn-primary align-bottom"
+                                onclick="document.location='/index';">Continue shopping
+                        </button>
                     </div>
                 </div>
             </div>

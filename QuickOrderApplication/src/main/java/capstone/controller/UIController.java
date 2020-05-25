@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import capstone.domain.Cart;
 import capstone.domain.CartItemIds;
+import capstone.domain.PaymentData;
 import capstone.util.PriceFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -24,6 +25,9 @@ import capstone.domain.Product;
 import capstone.domain.ProductInfo;
 import capstone.domain.ProductOption;
 import capstone.service.ProductsAndCategoriesService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -107,4 +111,34 @@ public class UIController {
         return "cart";
     }
 
+    @GetMapping("/checkout")
+    public String getCheckout(@RequestParam("cart") String encodedCart, Model model) {
+        Optional<Cart> cart =
+                productsAndCategoriesService.getCart(CartItemIds.parse(encodedCart));
+        if (!cart.isPresent()) {
+            return "redirect:/cart?cart=";
+        }
+
+        addStandardAttributes(model);
+        model.addAttribute("cart", cart.get());
+
+        return "checkout";
+    }
+
+    @RequestMapping(value = "/checkout", method = RequestMethod.POST)
+    public String postCheckout(@RequestParam("cart") String encodedCart, Model model) {
+        Optional<Cart> optionalCart =
+                productsAndCategoriesService.getCart(CartItemIds.parse(encodedCart));
+        if (!optionalCart.isPresent()) {
+            return "redirect:/cart?cart=";
+        }
+
+        addStandardAttributes(model);
+        Cart cart = optionalCart.get();
+
+
+        String orderId = productsAndCategoriesService.createOrder(cart, new PaymentData());
+
+        return "redirect:/order?order=" + orderId;
+    }
 }

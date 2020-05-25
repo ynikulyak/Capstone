@@ -35,7 +35,7 @@ class ShoppingCart {
     $('#cart-icon').attr('href', url);
   }
 
-  createCartUrl() {
+  createCartParameter() {
       let keys = Object.keys(this.#contents);
       let q = 0;
       let cartUrlParameters = [];
@@ -50,8 +50,16 @@ class ShoppingCart {
           cartUrlParameters.push(item.o.join('.'));
           cartUrlParameters.push('!');
       }
-      return '/cart?cart=' + encodeURIComponent(cartUrlParameters.join(''));
+      return encodeURIComponent(cartUrlParameters.join(''));
     }
+
+  createCartUrl() {
+      return '/cart?cart=' + this.createCartParameter();
+  }
+
+  createCheckoutUrl() {
+      return '/checkout?cart=' + this.createCartParameter();
+  }
 
   save() {
     console.log("Saving the cart...");
@@ -141,16 +149,24 @@ class ShoppingCart {
     return window.location.href + '';
   }
 
-  removeItem(productId, productSizeId, productTitle) {
+  removeItem(productId, productSizeId) {
     if (!confirm('Do you want to remove the item from the order?')) {
         return;
     }
     let key = productId + '_' + productSizeId;
-    console.log("Removing " + key + ", key exists: " + (!!this.#contents[key]) );
+    let existing = this.#contents[key];
+    if (!existing) {
+        console.log("Cart item " + key + " doesn't exist, not redirecting.");
+        return;
+    }
     delete this.#contents[key];
-    this.save();
 
+    this.save();
     document.location = this.createCartUrl();
+  }
+
+  proceedToCheckout() {
+    document.location = this.createCheckoutUrl();
   }
 }
 
@@ -196,10 +212,49 @@ function initializeCartPage() {
 	}
 }
 
+function initializeCheckoutPage() {
+    $('#save-info').change(function() {
+        $('#username').attr('required', this.checked);
+        $('#password').attr('required', this.checked);
+        if (this.checked) {
+            $('#username-container').removeClass('d-none');
+            $('#password-container').removeClass('d-none');
+        } else {
+            $('#username-container').addClass('d-none');
+            $('#password-container').addClass('d-none');
+        }
+    });
+    $('#checkoutForm').attr('action', shoppingCart.createCheckoutUrl());
+}
+
+function initializeFormPage() {
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.getElementsByClassName('needs-validation');
+  if (forms.length == 0) {
+    return;
+  }
+  console.log('Initializing page with forms that need validation');
+
+  // Loop over them and prevent submission
+  var validation = Array.prototype.filter.call(forms, function(form) {
+     form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+           event.preventDefault();
+           event.stopPropagation();
+         }
+         form.classList.add('was-validated');
+     }, false);
+  });
+}
+
 $(document).ready(function() {
     shoppingCart.restore();
     shoppingCart.restoreOptions();
     shoppingCart.updateLink();
 
     initializeCartPage();
+
+    initializeCheckoutPage();
+
+    initializeFormPage();
 });

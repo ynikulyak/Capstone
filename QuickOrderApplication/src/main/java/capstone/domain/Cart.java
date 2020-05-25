@@ -6,17 +6,12 @@ import java.util.List;
 public class Cart {
     public List<CartItem> items;
 
-    private volatile double subTotalCalculated = Double.NEGATIVE_INFINITY;
 
     public double getSubTotal() {
-        if (subTotalCalculated != Double.NEGATIVE_INFINITY) {
-            return subTotalCalculated;
-        }
         double subTotal = 0.0d;
         for (CartItem cartItem : items) {
             subTotal += cartItem.getPrice();
         }
-        subTotalCalculated = subTotal;
         return subTotal;
     }
 
@@ -31,5 +26,13 @@ public class Cart {
     public double getTotal() {
         double total = getSubTotal();
         return (1.0 + getTaxPercent()) * total;
+    }
+
+    public int getCount() {
+        int quantity= 0;
+        for (CartItem cartItem : items) {
+            quantity += cartItem.quantity;
+        }
+        return quantity;
     }
 }
