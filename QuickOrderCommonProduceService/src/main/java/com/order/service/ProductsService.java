@@ -1,6 +1,7 @@
 package com.order.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -22,91 +23,102 @@ import com.order.domain.ProductsRepository;
 import com.order.domain.Size;
 import com.order.domain.SizeRepository;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class ProductsService {
 
-    private static final Logger log = LoggerFactory.getLogger(ProductsService.class);
+  private static final Logger log = LoggerFactory.getLogger(ProductsService.class);
 
-    @Autowired
-    private ProductsRepository productsRepository;
+  @Autowired
+  private ProductsRepository productsRepository;
 
-    @Autowired
-    private SizeRepository sizeRepository;
+  @Autowired
+  private SizeRepository sizeRepository;
 
-    @Autowired
-    private ProductSizeRepository productSizeRepository;
+  @Autowired
+  private ProductSizeRepository productSizeRepository;
 
-    @Autowired
-    private OptionRepository optionRepository;
+  @Autowired
+  private OptionRepository optionRepository;
 
-    @Autowired
-    private ProductOptionRepository productOptionRepository;
+  @Autowired
+  private ProductOptionRepository productOptionRepository;
 
 
-    public Optional<Product> getById(long id) {
-        return productsRepository.findById(id);
+  public Optional<Product> getById(long id) {
+    return productsRepository.findById(id);
+  }
+
+  public List<Product> getByCategory(long categoryId) {
+    return productsRepository.getByCategory(categoryId);
+  }
+
+  public List<Product> getAllProducts() {
+    return productsRepository.getAll();
+  }
+
+  public Optional<Size> getSizeById(long id) {
+    return sizeRepository.findById(id);
+  }
+
+  public List<Size> getAllSizes() {
+    return sizeRepository.findAllSizes();
+  }
+
+  public Optional<ProductSize> getPrice(long productId, long sizeId) {
+    return productSizeRepository.findPriceBySizeIdAndProductId(productId, sizeId);
+  }
+
+  public Optional<Option> getOption(long id) {
+    return optionRepository.findById(id);
+  }
+
+  public List<Option> getAllOptions() {
+    return optionRepository.findAll();
+  }
+
+  public List<ProductOption> getAllAttributes() {
+    return productOptionRepository.findAll();
+  }
+
+  public List<ProductOption> getAllByAttId(long id) {
+    return productOptionRepository.findByOptionId(id);
+  }
+
+  public Optional<ProductOption> getAtt(long id) {
+    return productOptionRepository.findByAttributeValueId(id);
+  }
+
+  public List<ProductOption> getOptions(Collection<Long> productSizeIds) {
+    return productOptionRepository.findAllById(productSizeIds);
+  }
+
+
+  public List<ProductSize> getAllSizesByProductId(long productId) {
+    return productSizeRepository.findAllById(productId);
+  }
+
+  public List<ProductSize> getProductSizesByIds(Collection<Long> productSizeIds) {
+    return productSizeRepository.findAllById(productSizeIds);
+  }
+
+  public List<ProductInfo> getProductInfosByIds(List<Long> ids) {
+    List<Product> products = productsRepository.findAllById(ids);
+    if (products.isEmpty()) {
+      log.info(String.format("Couldn't find orders by ids: %s", ids));
+      return Collections.emptyList();
     }
-
-    public List<Product> getByCategory(long categoryId) {
-        return productsRepository.getByCategory(categoryId);
+    List<ProductOption> productOptions = productOptionRepository.findAll();
+    List<ProductInfo> result = new ArrayList<>(products.size());
+    for (Product product : products) {
+      List<ProductSize> productSizes = productSizeRepository.findAllById(product.getId());
+      result.add(new ProductInfo(product, productSizes, productOptions));
     }
+    return result;
+  }
 
-    public List<Product> getAllProducts() {
-        return productsRepository.getAll();
-    }
-
-    public Optional<Size> getSizeById(long id) {
-        return sizeRepository.findById(id);
-    }
-
-    public List<Size> getAllSizes() {
-        return sizeRepository.findAllSizes();
-    }
-
-    public Optional<ProductSize> getPrice(long productId, long sizeId) {
-        return productSizeRepository.findPriceBySizeIdAndProductId(productId, sizeId);
-    }
-
-    public Optional<Option> getOption(long id) {
-        return optionRepository.findById(id);
-    }
-
-    public List<Option> getAllOptions() {
-        return optionRepository.findAll();
-    }
-
-    public List<ProductOption> getAllAttributes() {
-        return productOptionRepository.findAll();
-    }
-
-    public List<ProductOption> getAllByAttId(long id) {
-        return productOptionRepository.findByOptionId(id);
-    }
-
-    public Optional<ProductOption> getAtt(long id) {
-        return productOptionRepository.findByAttributeValueId(id);
-    }
-
-    public List<ProductSize> getAllSizesByProductId(long id) {
-        return productSizeRepository.findAllById(id);
-    }
-
-    public List<ProductInfo> getProductInfosByIds(List<Long> ids) {
-        List<Product> products = productsRepository.findAllById(ids);
-        if (products.isEmpty()) {
-            log.info(String.format("Couldn't find orders by ids: %s", ids));
-            return Collections.emptyList();
-        }
-        List<ProductOption> productOptions = productOptionRepository.findAll();
-        List<ProductInfo> result = new ArrayList<>(products.size());
-        for (Product product : products) {
-            List<ProductSize> productSizes = productSizeRepository.findAllById(product.getId());
-            result.add(new ProductInfo(product, productSizes, productOptions));
-        }
-        return result;
-    }
-
-    public Optional<ProductInfo> getProductInfoById(long id) {
-        return getProductInfosByIds(Collections.singletonList(id)).stream().findFirst();
-    }
+  public Optional<ProductInfo> getProductInfoById(long id) {
+    return getProductInfosByIds(Collections.singletonList(id)).stream().findFirst();
+  }
 }

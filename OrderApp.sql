@@ -446,30 +446,21 @@ INSERT INTO `Attribute_values` (`attribute_value_id`, `attribute_id`,`attribute_
 VALUES(18, 4, "Basil Seeds", 0.70);
 
 
-
--- Table `Cart_items`
-DROP TABLE IF EXISTS `Cart_items`;
-CREATE TABLE IF NOT EXISTS `Cart_items` (
+-- Table `Customer`
+DROP TABLE IF EXISTS `Customer`;
+CREATE TABLE IF NOT EXISTS `Customer` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `product_size_id` INT(11) NOT NULL,
-  `attribute_value_ids` INT(11) NOT NULL,
-  `quantity` INT(11) NOT NULL,
-  `name` VARCHAR(25),
-  `total_price` DECIMAL(5, 2),
-  PRIMARY KEY (`id`)
+  `first_name` VARCHAR(254) NOT NULL,
+  `last_name` VARCHAR(254) NOT NULL,
+  `email` VARCHAR(254) NOT NULL,
+  `phone` VARCHAR(64) NOT NULL,
+  `username` VARCHAR(254) NOT NULL,
+  `password_hash` VARCHAR(254) NOT NULL,
+  `date_time_created` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `email_index` (`email`)
 )
-ENGINE = InnoDB;
-
-
--- Table `Cart`
-DROP TABLE IF EXISTS `Cart`;
-CREATE TABLE IF NOT EXISTS `Cart` (
-  `user_id` VARCHAR(255) NOT NULL,
-  `cart_item_id` INT(11) NOT NULL,
-  INDEX `user_id_index` (`user_id`)
-)
-ENGINE = InnoDB;
-
+ENGINE = InnoDB AUTO_INCREMENT=22222222;
 
 -- Table `Line_items`
 DROP TABLE IF EXISTS `Line_items`;
@@ -477,14 +468,13 @@ CREATE TABLE IF NOT EXISTS `Line_items` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `order_id` INT(11) NOT NULL,
   `product_size_id` INT(11) NOT NULL,
-  `attribute_value_ids` INT(11) NOT NULL,
+  `attribute_value_ids` VARCHAR(254) NOT NULL,
   `quantity` INT(11) NOT NULL,
-  `name` VARCHAR(25),
   `total_price` DECIMAL(5, 2),
   PRIMARY KEY (`id`),
   INDEX `order_id_index` (`order_id`)
 )
-ENGINE = InnoDB;
+ENGINE = InnoDB AUTO_INCREMENT=111;
 
 
 -- Table `Order`
@@ -494,12 +484,14 @@ CREATE TABLE IF NOT EXISTS `Order` (
   `tax` DECIMAL(5, 2) NOT NULL,
   `total` DECIMAL(5, 2) NOT NULL,
   `status` VARCHAR(25) NOT NULL,
+  `customer_id` INT(11) NOT NULL,
   `date_time_created` DATETIME NOT NULL,
   `date_time_ready` DATETIME NOT NULL,
   `date_time_pickedup` DATETIME NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  INDEX `customer_id_index` (`customer_id`)
 )
-ENGINE = InnoDB;
+ENGINE = InnoDB AUTO_INCREMENT=33333333;
 
 
 
@@ -507,11 +499,17 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `Staff`;
 CREATE TABLE IF NOT EXISTS `Staff` (
   `id` INT(11) NOT NULL,
-  `first_name` VARCHAR(25) NOT NULL,
-  `last_name` VARCHAR(25) NOT NULL,
+  `first_name` VARCHAR(254) NOT NULL,
+  `last_name` VARCHAR(254) NOT NULL,
+  `email` VARCHAR(254) NOT NULL,
+  `phone` VARCHAR(64) NOT NULL,
+  `password_hash` VARCHAR(254) NOT NULL,
+  `date_time_created` DATETIME NOT NULL,
+  INDEX `email_index` (`email`),
+  INDEX `lastname_index` (`last_name`),
   PRIMARY KEY (`id`)
 )
-ENGINE = InnoDB;
+ENGINE = InnoDB AUTO_INCREMENT=10000;
 
 
 
@@ -519,7 +517,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `Order_assignment`;
 CREATE TABLE IF NOT EXISTS `Order_assignment` (
   `id` INT(11) NOT NULL,
-  `staff_id` INT(11) NOT NULL,
+  `staff_id` INT(11) DEFAULT NULL,
   `order_id` INT(11) NOT NULL,
   `status` VARCHAR(25) NOT NULL,
   `date_time_created` DATETIME NOT NULL,
@@ -527,7 +525,7 @@ CREATE TABLE IF NOT EXISTS `Order_assignment` (
   INDEX `staff_id_index` (`staff_id`),
   PRIMARY KEY (`id`)
 )
-ENGINE = InnoDB;
+ENGINE = InnoDB AUTO_INCREMENT=1000;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
