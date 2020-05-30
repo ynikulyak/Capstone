@@ -1,0 +1,1 @@
+curl -H "Content-Type: application/json" -X POST -d '{"cartItems":[{"productId": 2, "productSizeId": 2, "quantity":2, "itemPrice": "4.0", "optionIds": [1,2,3]}],"paymentData":{"firstName":"Jane", "lastName": "Nikuliak", "email":"123@123.com", "phone":"+16509969433"}, "tax":"2.0", "total": "10.0"}' http://localhost:8082/api/order/v1/create
