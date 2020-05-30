@@ -2,6 +2,7 @@ package com.order.service;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
@@ -72,6 +73,9 @@ public class ProductsAndCategoriesService {
   }
 
   public List<ProductSizeDto> getProductSizes(Collection<Long> productSizeIds) {
+    if (productSizeIds.isEmpty()) {
+      return Collections.emptyList();
+    }
     String url = productSizedByIdsUrl + productSizeIds.stream().map(Number::toString).collect(Collectors.joining(","));
     log.info("Fetching JSON from " + url);
     ResponseEntity<ProductSizeDto[]> response = restTemplate.getForEntity(url, ProductSizeDto[].class);
@@ -80,6 +84,9 @@ public class ProductsAndCategoriesService {
   }
 
   public List<ProductOptionDto> getProductOptions(Collection<Long> productOptionIds) {
+    if (productOptionIds.isEmpty()) {
+      return Collections.emptyList();
+    }
     String url = productOptionsByIdsUrl +
         productOptionIds.stream().map(Number::toString).collect(Collectors.joining(","));
     log.info("Fetching JSON from " + url);
