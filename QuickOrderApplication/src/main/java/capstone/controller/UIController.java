@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import capstone.domain.Cart;
 import capstone.domain.CartItemIds;
+import capstone.domain.Order;
 import capstone.domain.PaymentData;
 import capstone.service.OrderService;
 import capstone.formatter.PriceFormatter;
@@ -130,8 +131,8 @@ public class UIController {
 
   @PostMapping(value = "/checkout")
   public String postCheckout(@RequestParam("cart") String encodedCart, PaymentData paymentData, Model model) {
-    Optional<Cart> optionalCart =
-        productsAndCategoriesService.getCart(CartItemIds.parse(encodedCart));
+    List<CartItemIds> items = CartItemIds.parse(encodedCart);
+    Optional<Cart> optionalCart = productsAndCategoriesService.getCart(items);
     if (!optionalCart.isPresent()) {
       return "redirect:/cart?cart=";
     }
@@ -141,7 +142,7 @@ public class UIController {
     try {
       Long orderId = orderService.createOrder(cart, paymentData);
       // Redirect to view order page.
-      return "redirect:/order?order=" + orderId;
+      return "redirect:/order?orderId=" + orderId;
     } catch (OrderService.OrderException oe) {
       model.addAttribute("error", oe.getMessage());
     }
@@ -151,5 +152,13 @@ public class UIController {
     model.addAttribute("cart", cart);
     addStandardAttributes(model);
     return "checkout";
+  }
+
+  @GetMapping("/order")
+  public String getOrder(@RequestParam("orderId") String orderId, Model model) {
+    Order order = orderService.getOrder(Long.parseLong(orderId));
+    addStandardAttributes(model);
+    model.addAttribute("order", order);
+    return "order";
   }
 }

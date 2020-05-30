@@ -7,6 +7,7 @@ public class PaymentData {
   public String firstName;
   public String lastName;
   public String email;
+  public String phone;
   public String username;
   public String password;
 
@@ -47,6 +48,14 @@ public class PaymentData {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
   }
 
   public String getUsername() {

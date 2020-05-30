@@ -101,6 +101,20 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="phone">Phone</label>
+                            <input type="phone" class="form-control" name="phone" id="phone"
+                                   th:value="${paymentData.phone}"
+                                   autocomplete="phone"
+                                   placeholder="you@example.com"
+                                   maxlength="30"
+                                   minlength="2"
+                                   required>
+                            <div class="invalid-feedback">
+                                Please enter a valid phone.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="address">Address</label>
                             <input type="text" class="form-control" id="address" name="address1"
                                    th:value="${paymentData.address1}"
@@ -254,7 +268,7 @@
                         </div>
 
                         <div class="mb-3 d-none" id="password-container">
-                            <label for="password">Address</label>
+                            <label for="password">Password</label>
                             <input type="password" class="form-control" id="password" name="password"
                                    th:value="${paymentData.password}"
                                    placeholder="*********" minlength="8" maxlength="254">
