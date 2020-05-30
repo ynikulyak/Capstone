@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletRequest;
-
 @RestController
 public class OrderRestController {
 
@@ -39,6 +37,7 @@ public class OrderRestController {
 
   @PostMapping(path = "/api/order/v1/create", consumes = "application/json", produces = "application/json")
   public CreateOrderResponse create(@RequestBody CreateOrderRequest createOrderRequest) {
+    log.info("Checking parsed request:" + createOrderRequest);
     if (createOrderRequest == null) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
