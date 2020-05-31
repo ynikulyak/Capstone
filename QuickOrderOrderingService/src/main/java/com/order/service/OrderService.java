@@ -4,6 +4,9 @@ import com.order.domain.Customer;
 import com.order.domain.LineItem;
 import com.order.domain.LineItemRepository;
 import com.order.domain.Order;
+import com.order.domain.OrderAssignment;
+import com.order.domain.OrderAssignmentRepository;
+import com.order.domain.OrderAssignmentStatus;
 import com.order.domain.OrderRepository;
 import com.order.domain.OrderStatus;
 import com.order.rest.CartItemDto;
@@ -32,13 +35,16 @@ public class OrderService {
   private static final Logger log = LoggerFactory.getLogger(OrderService.class);
 
   private final OrderRepository orderRepository;
+  private final OrderAssignmentRepository orderAssignmentRepository;
   private final LineItemRepository lineItemRepository;
   private final ProductsAndCategoriesService productsAndCategoriesService;
   private final CustomerService customerService;
 
-  public OrderService(OrderRepository orderRepository, LineItemRepository lineItemRepository,
+  public OrderService(OrderRepository orderRepository, OrderAssignmentRepository orderAssignmentRepository,
+                      LineItemRepository lineItemRepository,
                       ProductsAndCategoriesService productsAndCategoriesService, CustomerService customerService) {
     this.orderRepository = orderRepository;
+    this.orderAssignmentRepository = orderAssignmentRepository;
     this.lineItemRepository = lineItemRepository;
     this.productsAndCategoriesService = productsAndCategoriesService;
     this.customerService = customerService;
@@ -90,8 +96,16 @@ public class OrderService {
     }
     order.setLineItems(items);
     lineItemRepository.saveAll(items);
+
+    OrderAssignment orderAssignment = new OrderAssignment();
+    orderAssignment.setCreated(new Date());
+    orderAssignment.setOrder(order);
+    orderAssignment.setStatus(OrderAssignmentStatus.UNASSIGNED.name());
+    orderAssignmentRepository.save(orderAssignment);
+
     lineItemRepository.flush();
     orderRepository.flush();
+    orderAssignmentRepository.flush();
 
     log.info("Saved order id: " + order.getId());
     return new CreateOrderResponse().setOrderId(order.getId());

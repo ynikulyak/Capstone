@@ -516,7 +516,7 @@ ENGINE = InnoDB AUTO_INCREMENT=10000;
 -- Table `Order_assignment`
 DROP TABLE IF EXISTS `Order_assignment`;
 CREATE TABLE IF NOT EXISTS `Order_assignment` (
-  `id` INT(11) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `staff_id` INT(11) DEFAULT NULL,
   `order_id` INT(11) NOT NULL,
   `status` VARCHAR(25) NOT NULL,
@@ -525,7 +525,7 @@ CREATE TABLE IF NOT EXISTS `Order_assignment` (
   INDEX `staff_id_index` (`staff_id`),
   PRIMARY KEY (`id`)
 )
-ENGINE = InnoDB AUTO_INCREMENT=1000;
+ENGINE = InnoDB AUTO_INCREMENT=5000;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
