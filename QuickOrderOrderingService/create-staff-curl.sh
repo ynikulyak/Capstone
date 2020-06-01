@@ -1,0 +1,2 @@
+curl -H "Content-Type: application/json" -X POST -d '{"firstName":"Jane", "lastName":"Nikuliak", "email": "jane@123.com", "phone":"+1650123123123", "passwordHash": "HorsesRidingMotorbikes"}' http://localhost:8082/api/staff-op/v1/create
+curl -H "Content-Type: application/json" -X POST -d '{"firstName":"Thach", "lastName":"Doan", "email": "thach@123.com", "phone":"+1650456456456", "passwordHash": "MotorbikesFliesLikePlanes"}' http://localhost:8082/api/staff-op/v1/create

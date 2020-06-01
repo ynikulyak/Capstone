@@ -45,7 +45,6 @@ public class OrderDto {
 
     dto.customer = CustomerDto.from(order.getCustomer());
     dto.items = OrderLineItemDto.from(order.getLineItems(), sizeProvider, optionProvider);
-
     return dto;
   }
 }
