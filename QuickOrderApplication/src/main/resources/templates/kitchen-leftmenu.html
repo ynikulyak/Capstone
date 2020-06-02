@@ -1,0 +1,78 @@
+<nav th:fragment="kitchen-leftmenu(page)">
+
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a th:class="${page == 'index' ? 'nav-link active':'nav-link'}" href="/kitchen/index">
+                        <span data-feather="home"></span>
+                        Home
+                        <span th:if="${page == 'index'}" class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:class="${page == 'unassigned' ? 'nav-link active':'nav-link'}" href="/kitchen/orders/unassigned">
+                        <span data-feather="file"></span>
+                        Unassigned Orders
+                        <span th:if="${page == 'unassigned'}" class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:class="${page == 'assigned' ? 'nav-link active':'nav-link'}" href="/kitchen/orders/assigned">
+                        <span data-feather="shopping-cart"></span>
+                        Your orders
+                        <span th:if="${page == 'assigned'}" class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/kitchen/profile">
+                        <span data-feather="users"></span>
+                        Your profile
+                        <span th:if="${page == 'profile'}" class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/kitchen/log">
+                        <span data-feather="bar-chart-2"></span>
+                        Log hours
+                        <span th:if="${page == 'log'}" class="sr-only">(current)</span>
+                    </a>
+                </li>
+            </ul>
+
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                <span>Shift reports</span>
+                <a class="d-flex align-items-center text-muted" href="#">
+                    <span data-feather="plus-circle"></span>
+                </a>
+            </h6>
+            <ul class="nav flex-column mb-2">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <span data-feather="file-text"></span>
+                        Current month
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <span data-feather="file-text"></span>
+                        Last quarter
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <span data-feather="file-text"></span>
+                        Last year
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+      feather.replace()
+    </script>
+
+</nav>

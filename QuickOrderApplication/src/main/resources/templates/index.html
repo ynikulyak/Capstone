@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.com">
 <head>
-<div th:replace="header :: myheader"></div>
+    <div th:replace="header :: myheader"></div>
 </head>
 <body>
-	<nav th:insert="navbar :: navbar"></nav>
-	<div class="container">
-		<div class="row">
-			<div class="column category-main-link"
-				th:each="category : ${categories}"
-				th:onclick="'window.location.href = \'' +  @{/products/{id}(id=${category.id})} + '\''">
-				<h2 th:text="${category.name}"></h2>
-			</div>
-		</div>
-	</div>
+<nav th:insert="navbar :: navbar"></nav>
+<div class="container">
+    <div class="row">
+        <div class="column category-main-link"
+             th:each="category : ${categories}"
+             th:onclick="'window.location.href = \'' +  @{/products/{id}(id=${category.id})} + '\''">
+            <h2 th:text="${category.name}"></h2>
+        </div>
+    </div>
+</div>
 </body>
 </html>
