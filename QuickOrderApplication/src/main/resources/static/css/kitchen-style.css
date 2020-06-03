@@ -87,6 +87,13 @@ body {
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
 
+.orders td button {
+ font-size: 0.875rem;
+}
+.orders td {
+ vertical-align: middle;
+}
+
 /*
  * Utilities
  */

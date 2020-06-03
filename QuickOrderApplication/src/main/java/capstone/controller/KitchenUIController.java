@@ -1,7 +1,9 @@
 package capstone.controller;
 
 import capstone.domain.Category;
+import capstone.domain.OrderAssignmentPage;
 import capstone.formatter.PriceFormatter;
+import capstone.service.OrderAssignmentService;
 import capstone.service.OrderService;
 import capstone.service.ProductsAndCategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +19,14 @@ public class KitchenUIController {
 
   private static final Logger log = Logger.getLogger(KitchenUIController.class.getName());
 
-  private ProductsAndCategoriesService productsAndCategoriesService;
+  private OrderAssignmentService orderAssignmentService;
   private OrderService orderService;
   private PriceFormatter priceFormatter;
   private Environment env;
 
-  public KitchenUIController(ProductsAndCategoriesService productsAndCategoriesService, OrderService orderService,
+  public KitchenUIController(OrderAssignmentService orderAssignmentService, OrderService orderService,
                              PriceFormatter priceFormatter, Environment env) {
-    this.productsAndCategoriesService = productsAndCategoriesService;
+    this.orderAssignmentService = orderAssignmentService;
     this.orderService = orderService;
     this.priceFormatter = priceFormatter;
     this.env = env;
@@ -41,10 +43,10 @@ public class KitchenUIController {
   public String getAssignedOrders(Model model) {
     addStandardAttributes(model);
 
-    //takes every row in categories table, create category object, put in list, put
-    //list in a model and display by html
-    Iterable<Category> categories = productsAndCategoriesService.getCategories();
-    model.addAttribute("categories", categories);
+    long staffId = 123456L;
+
+    OrderAssignmentPage page = orderAssignmentService.getActiveAssignments(staffId, 0, 10);
+    model.addAttribute("page", page);
     return "kitchen-orders-assigned";
   }
 
@@ -53,10 +55,8 @@ public class KitchenUIController {
   public String getUnassignedOrders(Model model) {
     addStandardAttributes(model);
 
-    //takes every row in categories table, create category object, put in list, put
-    //list in a model and display by html
-    Iterable<Category> categories = productsAndCategoriesService.getCategories();
-    model.addAttribute("categories", categories);
+    OrderAssignmentPage page = orderAssignmentService.getUnassignedAssignments(0, 10);
+    model.addAttribute("page", page);
     return "kitchen-orders-unassigned";
   }
 }

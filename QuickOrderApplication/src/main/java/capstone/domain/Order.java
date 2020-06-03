@@ -22,4 +22,6 @@ public class Order {
   public Date ready;
 
   public Date pickedUp;
+
+  public Customer customer;
 }
