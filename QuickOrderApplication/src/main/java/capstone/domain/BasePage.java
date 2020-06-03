@@ -22,7 +22,7 @@ public class BasePage {
 
   public List<String> getPages() {
     List<String> pages = new ArrayList<>();
-    for (int i = 1; i < totalPages; i++) {
+    for (int i = 1; i <= totalPages; i++) {
       pages.add(Integer.toString(i));
     }
     return pages;

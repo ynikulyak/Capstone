@@ -11,6 +11,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.logging.Logger;
 
@@ -40,22 +41,24 @@ public class KitchenUIController {
 
   // Orders that are assigned to currently logged-in person.
   @GetMapping("/kitchen/orders/assigned")
-  public String getAssignedOrders(Model model) {
+  public String getAssignedOrders(@RequestParam(value = "page", required = false) Integer pg, Model model) {
     addStandardAttributes(model);
 
     long staffId = 123456L;
 
-    OrderAssignmentPage page = orderAssignmentService.getActiveAssignments(staffId, 0, 10);
+    pg = pg != null ? pg - 1 : 0;
+    OrderAssignmentPage page = orderAssignmentService.getActiveAssignments(staffId, pg, 10);
     model.addAttribute("page", page);
     return "kitchen-orders-assigned";
   }
 
   // Orders that are assigned to currently logged-in person.
   @GetMapping("/kitchen/orders/unassigned")
-  public String getUnassignedOrders(Model model) {
+  public String getUnassignedOrders(@RequestParam(value = "page", required = false) Integer pg, Model model) {
     addStandardAttributes(model);
 
-    OrderAssignmentPage page = orderAssignmentService.getUnassignedAssignments(0, 10);
+    pg = pg != null ? pg - 1 : 0;
+    OrderAssignmentPage page = orderAssignmentService.getUnassignedAssignments(pg, 10);
     model.addAttribute("page", page);
     return "kitchen-orders-unassigned";
   }
