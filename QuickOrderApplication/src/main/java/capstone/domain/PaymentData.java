@@ -5,24 +5,37 @@ package capstone.domain;
  */
 public class PaymentData {
   public String firstName;
+
   public String lastName;
+
   public String email;
+
   public String phone;
+
   public String username;
+
   public String password;
 
   // Billing address
   public String address1;
+
   public String address2;
+
   public String city;
+
   public String state;
+
   public String country;
+
   public String zipCode;
 
   // Card data
   public String ccName;
+
   public String ccNumber;
+
   public String ccExpiration;
+
   public String ccCvv;
 
   // Getters and setters are needed for Spring to populate data from POST

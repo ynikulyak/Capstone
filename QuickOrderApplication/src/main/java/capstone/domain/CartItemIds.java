@@ -16,8 +16,11 @@ public class CartItemIds {
   private static final Logger log = Logger.getLogger(CartItemIds.class.getName());
 
   public long productId;
+
   public long productSizeId;
+
   public int quantity;
+
   public Set<Long> optionIds;
 
   public double itemPrice;

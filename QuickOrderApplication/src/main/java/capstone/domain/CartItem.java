@@ -5,8 +5,11 @@ import java.util.stream.Collectors;
 
 public class CartItem {
   public ProductInfo productInfo;
+
   public ProductSize selectedSize;
+
   public List<ProductOption> selectedOptions;
+
   public int quantity;
 
   public double getPrice() {

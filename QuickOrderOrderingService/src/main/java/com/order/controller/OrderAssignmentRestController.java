@@ -1,6 +1,5 @@
 package com.order.controller;
 
-import com.order.domain.OrderAssignment;
 import com.order.rest.OrderAssignmentDto;
 import com.order.service.OrderAssignmentService;
 import org.springframework.data.domain.Page;

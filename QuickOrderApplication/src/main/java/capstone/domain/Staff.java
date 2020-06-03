@@ -3,9 +3,9 @@ package capstone.domain;
 import java.util.Date;
 
 /**
- * Customer who created an order.
+ * Staff DTO.
  */
-public class OrderCustomer {
+public class Staff {
   public Long id;
 
   public String firstName;
@@ -15,8 +15,6 @@ public class OrderCustomer {
   public String email;
 
   public String phone;
-
-  public String username;
 
   public Date created;
 }
