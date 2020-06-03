@@ -20,12 +20,16 @@ public class BasePage {
 
   public int number;
 
-  public List<String> getPages() {
-    List<String> pages = new ArrayList<>();
+  public List<Integer> getPages() {
+    List<Integer> pages = new ArrayList<>();
     for (int i = 1; i <= totalPages; i++) {
-      pages.add(Integer.toString(i));
+      pages.add(i);
     }
     return pages;
+  }
+
+  public boolean isCurrentPage(int page) {
+    return pageable.pageNumber == page - 1;
   }
 
   public static class Pageable {

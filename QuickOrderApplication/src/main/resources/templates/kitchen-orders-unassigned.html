@@ -61,7 +61,7 @@
 
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                    <li class="page-item" th:each="pg : ${page.getPages()}">
+                    <li th:class="@{'page-item ' + ${page.isCurrentPage(pg) ? 'active' : ''}}" th:each="pg : ${page.getPages()}">
                         <a class="page-link" th:href="@{'/kitchen/orders/unassigned?page=' + ${pg}}" th:text="${pg}">1</a>
                     </li>
                 </ul>
