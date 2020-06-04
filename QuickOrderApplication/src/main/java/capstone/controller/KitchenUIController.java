@@ -1,6 +1,7 @@
 package capstone.controller;
 
 import capstone.domain.Category;
+import capstone.domain.OrderAssignment;
 import capstone.domain.OrderAssignmentPage;
 import capstone.formatter.PriceFormatter;
 import capstone.service.OrderAssignmentService;
@@ -11,14 +12,18 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Controller
 public class KitchenUIController {
 
   private static final Logger log = Logger.getLogger(KitchenUIController.class.getName());
+
+  private static final long currentStaffId = 10005L; // TODO: set staff id from logged in cookie/session.
 
   private OrderAssignmentService orderAssignmentService;
   private OrderService orderService;
@@ -44,10 +49,8 @@ public class KitchenUIController {
   public String getAssignedOrders(@RequestParam(value = "page", required = false) Integer pg, Model model) {
     addStandardAttributes(model);
 
-    long staffId = 123456L;
-
     pg = pg != null ? pg - 1 : 0;
-    OrderAssignmentPage page = orderAssignmentService.getActiveAssignments(staffId, pg, 10);
+    OrderAssignmentPage page = orderAssignmentService.getActiveAssignments(currentStaffId, pg, 10);
     model.addAttribute("page", page);
     return "kitchen-orders-assigned";
   }
@@ -61,5 +64,15 @@ public class KitchenUIController {
     OrderAssignmentPage page = orderAssignmentService.getUnassignedAssignments(pg, 10);
     model.addAttribute("page", page);
     return "kitchen-orders-unassigned";
+  }
+
+  @PostMapping("/kitchen/orders/unassigned")
+  public String postAssign(@RequestParam(value = "orderId", required = true) long orderId) {
+    Optional<OrderAssignment> orderAssignment = orderAssignmentService.assign(orderId, currentStaffId);
+    if (orderAssignment.isPresent()) {
+      return "redirect:/kitchen/orders/assigned?assignmentId=" + orderAssignment.get().id;
+      //return "redirect:/kitchen/orders/process?assignmentId=" + orderAssignment.get().id;
+    }
+    return "redirect:/kitchen/orders/unassigned?error=Unable%20to%20assign&orderId=" + orderId;
   }
 }

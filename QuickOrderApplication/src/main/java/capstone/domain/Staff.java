@@ -17,4 +17,8 @@ public class Staff {
   public String phone;
 
   public Date created;
+
+  public String getName() {
+    return firstName + " " + lastName;
+  }
 }
