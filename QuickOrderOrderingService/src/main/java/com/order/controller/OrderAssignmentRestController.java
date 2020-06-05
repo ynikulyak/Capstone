@@ -1,5 +1,6 @@
 package com.order.controller;
 
+import com.order.domain.OrderAssignment;
 import com.order.rest.OrderAssignmentDto;
 import com.order.service.OrderAssignmentService;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,17 @@ public class OrderAssignmentRestController {
 
   public OrderAssignmentRestController(OrderAssignmentService orderAssignmentService) {
     this.orderAssignmentService = orderAssignmentService;
+  }
+
+  @GetMapping("/api/assignments/v1/get/{orderIdAssignmentId}")
+  public OrderAssignmentDto getAssignment(@PathVariable("orderIdAssignmentId") long orderIdAssignmentId) {
+    Optional<OrderAssignmentDto> orderAssignmentDto = orderAssignmentService.get(orderIdAssignmentId);
+    if (orderAssignmentDto.isPresent()) {
+      return orderAssignmentDto.get();
+    }
+    throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+        "Assigned order was not found for order assignment id: " + orderIdAssignmentId);
+
   }
 
   @GetMapping("/api/assignments/v1/active/{staffId}")

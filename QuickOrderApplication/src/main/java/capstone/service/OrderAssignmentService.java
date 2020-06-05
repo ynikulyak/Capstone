@@ -20,6 +20,9 @@ public class OrderAssignmentService {
   private final String getUnassignedOrdersUrl;
   private final String getAssignedOrdersUrl;
   private final String assignUrl;
+
+  private final String assignmentUrl;
+
   private final String startUrl;
   private final String completeUrl;
   private final String cancelUrl;
@@ -31,10 +34,22 @@ public class OrderAssignmentService {
     this.getAssignedOrdersUrl = baseUrl + "/api/assignments/v1/active/";
     this.assignUrl = baseUrl + "/api/assignments/v1/assign/";
 
+    this.assignmentUrl = baseUrl + "/api/assignments/v1/get/";
+
     this.startUrl = baseUrl + "/api/assignments/v1/start/";
     this.completeUrl = baseUrl + "/api/assignments/v1/complete/";
     this.cancelUrl = baseUrl + "/api/assignments/v1/cancel/";
     this.pickupUrl = baseUrl + "/api/assignments/v1/pickup/";
+  }
+
+  public Optional<OrderAssignment> get(long orderAssignmentId) {
+    String url = assignmentUrl + orderAssignmentId;
+    ResponseEntity<OrderAssignment> response = restTemplate.getForEntity(url, OrderAssignment.class);
+    if (response.getStatusCodeValue() == 200) {
+      return Optional.of(response.getBody());
+    }
+    log.info("Unable to find assignment: " + url + " code: " + response.getStatusCodeValue());
+    return Optional.empty();
   }
 
   public OrderAssignmentPage getActiveAssignments(long staffId, int page, int size) {

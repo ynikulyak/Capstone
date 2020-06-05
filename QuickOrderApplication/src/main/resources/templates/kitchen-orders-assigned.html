@@ -57,7 +57,7 @@
                         <td th:text="${assignment.getCreateFormatted()}"></td>
                         <td>
                             <button type="button" class="btn btn-primary"
-                                    th:onclick="@{'viewAssignment(' +${assignment.id} + ')';}">Proceed
+                                    th:onclick="@{'viewAssignment(' +${assignment.id} + ');'}">Proceed
                             </button>
                         </td>
                     </tr>
@@ -80,5 +80,10 @@
     </div>
 </div>
 
+<script>
+function viewAssignment(id) {
+    document.location = '/kitchen/orders/process/' + id;
+}
+</script>
 </body>
 </html>

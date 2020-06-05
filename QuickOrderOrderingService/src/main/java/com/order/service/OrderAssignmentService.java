@@ -44,6 +44,10 @@ public class OrderAssignmentService {
     this.orderAssignmentRepository = orderAssignmentRepository;
   }
 
+  public Optional<OrderAssignmentDto> get(long orderIdAssignmentId) {
+    return orderAssignmentRepository.findById(orderIdAssignmentId).map(this::toDto);
+  }
+
   @Transactional
   public Page<OrderAssignmentDto> findActiveByStaffId(long staffId, int page, int size) {
     return toDtoPage(orderAssignmentRepository.findActiveByStaffId(staffId, PageRequest.of(page, size)));
