@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
-<nav th:fragment="kitchen-navbar">
+<nav th:fragment="kitchen-navbar(page)">
 
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/kitchen/index">Nice Cafe</a>
         <!--
         <input class="form-control form-control-dark w-100" type="text" placeholder="Search orders" aria-label="Search">
         -->
-        <ul class="navbar-nav px-3">
+        <ul class="navbar-nav px-3" th:if="${page != 'signin'}" >
             <li class="nav-item text-nowrap">
                 <a class="nav-link" href="/kitchen/signout">Sign out</a>
             </li>

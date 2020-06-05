@@ -15,4 +15,16 @@ public class OrderLineItem {
   public double totalPrice;
 
   public List<ProductOption> selectedOptions;
+
+  public String getOptions() {
+    if (selectedOptions == null || selectedOptions.size() == 0) {
+      return "";
+    }
+    StringBuilder sb = new StringBuilder();
+    for (ProductOption po : selectedOptions) {
+      sb.append(po.attribute_value_name).append(", ");
+    }
+    sb.setLength(sb.length() - 2);
+    return sb.toString();
+  }
 }

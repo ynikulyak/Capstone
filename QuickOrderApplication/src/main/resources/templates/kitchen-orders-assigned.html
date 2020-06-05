@@ -4,7 +4,7 @@
     <div th:replace="kitchen-header :: kitchen-header(pageTitle='Orders, assigned to you')"></div>
 </head>
 <body>
-<nav th:insert="kitchen-navbar :: kitchen-navbar"></nav>
+<nav th:insert="kitchen-navbar :: kitchen-navbar(page='assigned')"></nav>
 
 <div class="container-fluid">
     <div class="row">
@@ -25,7 +25,7 @@
                 </div>
             </div>
 
-            <h2>Orders, assigned to you</h2>
+            <h2>Assigned to you</h2>
 
 
             <div class="table-responsive">

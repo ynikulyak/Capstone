@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.com">
 <head>
-    <div th:replace="kitchen-header :: kitchen-header(pageTitle='Orders, assigned to you')"></div>
+    <div th:replace="kitchen-header :: kitchen-header(pageTitle='Order assignment '+${assignment.id})"></div>
 </head>
 <body>
-<nav th:insert="kitchen-navbar :: kitchen-navbar"></nav>
+<nav th:insert="kitchen-navbar :: kitchen-navbar(page='process')"></nav>
 
 <div class="container-fluid">
     <div class="row">
@@ -12,7 +12,8 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-                <h1 class="h2">Orders</h1>
+                <h1 class="h2"
+                    th:text="@{'Assignment: ' + ${assignment.id} + ', order: ' + ${assignment.order.id}}"></h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group mr-2">
                         <button class="btn btn-sm btn-outline-secondary">Share</button>
@@ -24,8 +25,6 @@
                     </button>
                 </div>
             </div>
-
-            <h2>View order</h2>
 
 
             <div class="table-responsive">
@@ -40,15 +39,37 @@
                     </tr>
                     <tr>
                         <td>Order Items</td>
-                        <td th:text="${assignment.order.items.size()}"></td>
+                        <td>
+                            <table class="table table-striped table-sm table-bordered">
+                                <tr th:each="item : ${assignment.order.items}">
+                                    <td class="col-10">
+                                        <b th:text="${item.selectedSize.product.name}"></b>
+                                        (<span th:text="${item.selectedSize.size.volume}"></span>)<br/>
+                                        <b>Options</b>:
+                                        <span th:text="${item.getOptions()}"></span>
+                                    </td>
+                                    <td class="col-2">
+                                        <b th:text="${item.quantity}"></b>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Order Total</td>
+                        <td>Tax</td>
+                        <td th:text="${price_formatter.getUsd(assignment.order.tax)}"></td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
                         <td th:text="${price_formatter.getUsd(assignment.order.total)}"></td>
                     </tr>
                     <tr>
-                        <td>Order Customer</td>
-                        <td th:text="${assignment.order.customer.getName()}"></td>
+                        <td>Customer</td>
+                        <td>
+                            <b th:text="${assignment.order.customer.getName()}"></b>
+                            <span th:text="${assignment.order.customer.email}"></span><br/>
+                            <span th:text="${assignment.order.customer.phone}"></span>
+                        </td>
                     </tr>
                     <tr>
                         <td>Status</td>
@@ -58,37 +79,43 @@
                         <td>Created</td>
                         <td th:text="${assignment.getCreateFormatted()}"></td>
                     </tr>
+                    <tr th:if="${assignment.staff != null}">
+                        <td>Staff member</td>
+                        <td>
+                            <b th:text="${assignment.staff.getName()}"></b>
+                            <span th:text="${assignment.staff.email}"></span>
+                            <span th:text="${assignment.staff.phone}"></span>
+                        </td>
+                    </tr>
                     <tr th:if="${canEdit}">
                         <td>Operations</td>
-                        <td>
-                            <div class="container">
-                                <form class="row" action="/kitchen/orders/perform/" method="post"
-                                      th:if="${assignment.status == 'ASSIGNED'}">
-                                    <input type="hidden" name="orderAssignmentId" th:value="${assignment.id}"/>
-                                    <input type="hidden" name="operation" value="start"/>
-                                    <input type="submit" name="submit" class="btn btn-primary"
-                                           value="Start"/>
-                                </form>
-                                <form class="row" action="/kitchen/orders/perform/" method="post"
-                                      th:if="${assignment.status == 'ASSIGNED'}">
-                                    <input type="hidden" name="orderAssignmentId" th:value="${assignment.id}"/>
-                                    <input type="hidden" name="operation" value="complete"/>
-                                    <input type="submit" name="submit" class="btn btn-primary"
-                                           value="Complete"/>
-                                </form>
-                                <form class="row" action="/kitchen/orders/perform/" method="post">
-                                    <input type="hidden" name="orderAssignmentId" th:value="${assignment.id}"/>
-                                    <input type="hidden" name="operation" value="cancel"/>
-                                    <input type="submit" name="submit" class="btn btn-danger"
-                                           value="Cancel"
-                                           onclick="return confirm('Are you sure you want to cancel the order?');"/>
-                                </form>
-                            </div>
+                        <td class="container">
+                            <form class="float-left" action="/kitchen/orders/perform/" method="post"
+                                  th:if="${assignment.status == 'ASSIGNED'}">
+                                <input type="hidden" name="orderAssignmentId" th:value="${assignment.id}"/>
+                                <input type="hidden" name="operation" value="start"/>
+                                <input type="submit" name="submit" class="btn btn-primary"
+                                       value="Start"/>
+                            </form>
+                            <form class="float-left order-button" action="/kitchen/orders/perform/" method="post"
+                                  th:if="${assignment.status == 'PROCESSING'}">
+                                <input type="hidden" name="orderAssignmentId" th:value="${assignment.id}"/>
+                                <input type="hidden" name="operation" value="complete"/>
+                                <input type="submit" name="submit" class="btn btn-success"
+                                       value="Complete"/>
+                            </form>
+                            <form class="float-left order-button" action="/kitchen/orders/perform/" method="post"
+                                  th:if="${assignment.status == 'ASSIGNED' || assignment.status == 'PROCESSING'}">
+                                <input type="hidden" name="orderAssignmentId" th:value="${assignment.id}"/>
+                                <input type="hidden" name="operation" value="cancel"/>
+                                <input type="submit" name="submit" class="btn btn-danger"
+                                       value="Cancel"
+                                       onclick="return confirm('Are you sure you want to cancel the order?');"/>
+                            </form>
                         </td>
                     </tr>
                 </table>
             </div>
-
 
         </main>
     </div>

@@ -45,6 +45,13 @@ public class KitchenUIController {
   }
 
   // Orders that are assigned to currently logged-in person.
+  @GetMapping("/kitchen/index")
+  public String getIndex(Model model) {
+    addStandardAttributes(model);
+    return "kitchen-index";
+  }
+
+  // Orders that are assigned to currently logged-in person.
   @GetMapping("/kitchen/orders/assigned")
   public String getAssignedOrders(@RequestParam(value = "page", required = false) Integer pg, Model model) {
     addStandardAttributes(model);
@@ -71,7 +78,6 @@ public class KitchenUIController {
     Optional<OrderAssignment> orderAssignment = orderAssignmentService.assign(orderId, currentStaffId);
     if (orderAssignment.isPresent()) {
       return "redirect:/kitchen/orders/assigned?assignmentId=" + orderAssignment.get().id;
-      //return "redirect:/kitchen/orders/process/" + orderAssignment.get().id;
     }
     return "redirect:/kitchen/orders/unassigned?error=Unable%20to%20assign&orderId=" + orderId;
   }
@@ -90,5 +96,29 @@ public class KitchenUIController {
     model.addAttribute("assignment", assignment);
     model.addAttribute("canEdit", canEdit);
     return "kitchen-orders-process";
+  }
+
+  @PostMapping("/kitchen/orders/perform")
+  public String postPerform(@RequestParam(value = "orderAssignmentId", required = true) long orderAssignmentId,
+                            @RequestParam(value = "operation", required = true) String operation) {
+    Optional<OrderAssignment> orderAssignment = Optional.empty();
+
+    switch (operation) {
+      case "start":
+        orderAssignment = orderAssignmentService.start(orderAssignmentId);
+        break;
+      case "complete":
+        orderAssignment = orderAssignmentService.complete(orderAssignmentId);
+        break;
+      case "cancel":
+        orderAssignment = orderAssignmentService.cancel(orderAssignmentId);
+        break;
+    }
+
+    String redirectUrl = "redirect:/kitchen/orders/process/" + orderAssignmentId;
+    if (!orderAssignment.isPresent()) {
+      redirectUrl += "?error=Order%20assignment%20not%20found";
+    }
+    return redirectUrl;
   }
 }

@@ -25,6 +25,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a th:class="${page == 'completed' ? 'nav-link active':'nav-link'}" href="/kitchen/orders/unassigned">
+                        <span data-feather="file"></span>
+                        Completed Orders
+                        <span th:if="${page == 'unassigned'}" class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/kitchen/profile">
                         <span data-feather="users"></span>
                         Your profile
