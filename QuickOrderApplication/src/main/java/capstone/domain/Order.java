@@ -24,4 +24,12 @@ public class Order {
   public Date pickedUp;
 
   public Customer customer;
+
+  public double getSubTotal() {
+    double subTotal = 0.0d;
+    for (OrderLineItem cartItem : items) {
+      subTotal += cartItem.getPrice();
+    }
+    return subTotal;
+  }
 }

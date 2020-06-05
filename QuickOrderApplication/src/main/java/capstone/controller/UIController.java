@@ -142,7 +142,7 @@ public class UIController {
     try {
       Long orderId = orderService.createOrder(cart, paymentData);
       // Redirect to view order page.
-      return "redirect:/order?orderId=" + orderId;
+      return "redirect:/order/" + orderId;
     } catch (OrderService.OrderException oe) {
       model.addAttribute("error", oe.getMessage());
     }
@@ -154,9 +154,9 @@ public class UIController {
     return "checkout";
   }
 
-  @GetMapping("/order")
-  public String getOrder(@RequestParam("orderId") String orderId, Model model) {
-    Order order = orderService.getOrder(Long.parseLong(orderId));
+  @GetMapping("/order/{orderId}")
+  public String getOrder(@PathVariable("orderId") long orderId, Model model) {
+    Order order = orderService.getOrder(orderId);
     addStandardAttributes(model);
     model.addAttribute("order", order);
     return "order";

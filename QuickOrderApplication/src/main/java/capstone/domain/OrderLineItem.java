@@ -27,4 +27,12 @@ public class OrderLineItem {
     sb.setLength(sb.length() - 2);
     return sb.toString();
   }
+
+  public double getPrice() {
+    double price = quantity * selectedSize.price;
+    for (ProductOption productOption : selectedOptions) {
+      price += productOption.price;
+    }
+    return price;
+  }
 }
