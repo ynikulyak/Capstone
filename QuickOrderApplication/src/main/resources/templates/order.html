@@ -7,66 +7,126 @@
 <nav th:insert="navbar :: navbar"></nav>
 <div class="card">
     <div class="card-body container">
-        <h3 th:text="@{'Order ' + ${order.id}}"></h3>
 
-        <div>
-            <!-- List of items -->
-            <ul class="list-group list-group-striped list-group-hover">
-                <li class="list-group-item d-flex justify-content-between align-items-center"
-                    th:each="item: ${order.items}">
-                    <div class="container-fluid">
-                        <h5 class="mb-1"
-                            th:text="@{${item.selectedSize.product.name} + ' ' + ${item.selectedSize.size.volume} + ' (' + ${item.selectedSize.product.category.name} + ')' }"></h5>
-                        <div class="container-fluid">
-                            <small class="badge badge-secondary cart-option"
-                                   th:each="option : ${item.selectedOptions}">
-                                <span th:text="@{${option.attribute_value_name}}"></span>
-                            </small>
+        <h4>Thank you!</h4>
+
+        <div class="container">
+            <div class="row justify-content-md-center">
+                <div class="col col-sm-7">
+                    <h4 th:text="@{'Order ' + ${order.id}}"></h4>
+                    <!-- List of items -->
+                    <ul class="list-group list-group-striped list-group-hover">
+                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                            th:each="item: ${order.items}">
+                            <div class="container-fluid">
+                                <h5 class="mb-1"
+                                    th:text="@{${item.selectedSize.product.name} + ' ' + ${item.selectedSize.size.volume} + ' (' + ${item.selectedSize.product.category.name} + ')' }"></h5>
+                                <div class="container-fluid">
+                                    <small class="badge badge-secondary cart-option"
+                                           th:each="option : ${item.selectedOptions}">
+                                        <span th:text="@{${option.attribute_value_name}}"></span>
+                                    </small>
+                                </div>
+                            </div>
+                            <span class="badge badge-primary" th:text="${item.quantity}"></span>
+                            &nbsp;
+                            <span class="badge badge-info"
+                                  th:text="${price_formatter.getUsd(item.getPrice())}"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col col-sm-5">
+                    <h4>Customer information</h4>
+                    <ul class="list-group list-group-striped list-group-hover">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="row w-100">
+                                <div class="col col-sm-4">
+                                    <b>ID:</b>
+                                </div>
+                                <div class="col col-sm-8">
+                                    <span th:text="${order.customer.id}"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="row w-100">
+                                <div class="col col-sm-4">
+                                    <b>Name:</b>
+                                </div>
+                                <div class="col col-sm-8">
+                                    <span th:text="${order.customer.getName()}"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="row w-100">
+                                <div class="col col-sm-4">
+                                    <b>Phone:</b>
+                                </div>
+                                <div class="col col-sm-8">
+                                    <span th:text="${order.customer.phone}"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="row w-100">
+                                <div class="col col-sm-4">
+                                    <b>Email:</b>
+                                </div>
+                                <div class="col col-sm-8">
+                                    <span th:text="${order.customer.email}"></span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total and checkout -->
+        <div class="container">
+
+            <div class="d-flex flex-row list-group-item ">
+                <div class="w-75">
+
+                    <div class="d-flex flex-row">
+                        <div class="p-2 col-sm-2 text-right"><b>Sub total:</b></div>
+                        <div class="p-2 col-sm-4">
+                            <span th:text="${price_formatter.getUsd(order.getSubTotal())}"></span>
+                        </div>
+                        <div class="p-2 col-sm-2 text-right"><b>Status:</b></div>
+                        <div class="p-2 col-sm-4">
+                            <span th:text="${order.status}"></span>
                         </div>
                     </div>
-                    <span class="badge badge-primary" th:text="${item.quantity}"></span>
-                    &nbsp;
-                    <span class="badge badge-info"
-                          th:text="${price_formatter.getUsd(item.getPrice())}"></span>
-                </li>
-            </ul>
-
-            <!-- Total and checkout -->
-            <div class="container">
-                <div class="row justify-content-md-center">
-                    <div class="col col-sm-8">
-                        <div class="row">
-                            <div class="col col-sm-2">
-                                <span><b>Sub total:</b></span>
-                            </div>
-                            <div class="col col-sm-10">
-                                <span th:text="${price_formatter.getUsd(order.getSubTotal())}"></span>
-                            </div>
+                    <div class="d-flex flex-row">
+                        <div class="p-2 col-sm-2 text-right"><b>Tax:</b></div>
+                        <div class="p-2 col-sm-4">
+                            <span th:text="${price_formatter.getUsd(order.tax)}"></span>
                         </div>
-                        <div class="row">
-                            <div class="col col-sm-2">
-                                <span><b>Tax:</b></span>
-                            </div>
-                            <div class="col col-sm-10">
-                                <span th:text="${price_formatter.getUsd(order.tax)}"></span>
-
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col col-sm-2">
-                                <span><b>Total:</b></span>
-                            </div>
-                            <div class="col col-sm-10">
-                                <span th:text="${price_formatter.getUsd(order.total)}"></span>
-                            </div>
+                        <div class="p-2 col-sm-2 text-right"><b>Created:</b></div>
+                        <div class="p-2 col-sm-4">
+                            <span th:text="${order.getCreated()}"></span>
                         </div>
                     </div>
-                    <div class="col col-sm-4 text-right">
-                        <button type="button" class="btn btn-primary align-bottom"
-                                onclick="document.location='/index';">Continue shopping
-                        </button>
+                    <div class="d-flex flex-row">
+                        <div class="p-2 col-sm-2 text-right"><b>Total:</b></div>
+                        <div class="p-2 col-sm-4">
+                            <span th:text="${price_formatter.getUsd(order.total)}"></span>
+                        </div>
+                        <div class="p-2 col-sm-2 text-right"><b>Ready:</b></div>
+                        <div class="p-2 col-sm-4">
+                            <span th:text="${order.getReady()}"></span>
+                        </div>
                     </div>
                 </div>
+
+                <div class="w-25 p-2 text-right">
+                    <button type="button" class="btn btn-primary align-bottom"
+                            onclick="document.location='/index';">Continue shopping
+                    </button>
+                </div>
+
             </div>
         </div>
     </div>

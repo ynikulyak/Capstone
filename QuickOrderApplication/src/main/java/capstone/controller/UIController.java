@@ -13,10 +13,12 @@ import capstone.domain.Cart;
 import capstone.domain.CartItemIds;
 import capstone.domain.Order;
 import capstone.domain.PaymentData;
+import capstone.service.HashingService;
 import capstone.service.OrderService;
 import capstone.formatter.PriceFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ import capstone.domain.ProductOption;
 import capstone.service.ProductsAndCategoriesService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 public class UIController {
@@ -40,6 +43,9 @@ public class UIController {
 
   @Autowired
   private ProductsAndCategoriesService productsAndCategoriesService;
+
+  @Autowired
+  private HashingService hashingService;
 
   @Autowired
   private OrderService orderService;
@@ -142,7 +148,7 @@ public class UIController {
     try {
       Long orderId = orderService.createOrder(cart, paymentData);
       // Redirect to view order page.
-      return "redirect:/order/" + orderId;
+      return "redirect:/order/" + orderId + '/' + hashingService.hash(Long.toString(orderId)) + "?clearCart=true";
     } catch (OrderService.OrderException oe) {
       model.addAttribute("error", oe.getMessage());
     }
@@ -154,8 +160,17 @@ public class UIController {
     return "checkout";
   }
 
-  @GetMapping("/order/{orderId}")
-  public String getOrder(@PathVariable("orderId") long orderId, Model model) {
+  @GetMapping("/order/{orderId}/{orderHash}")
+  public String getOrder(@PathVariable("orderId") long orderId,
+                         @PathVariable("orderHash") String orderHash,
+                         Model model) {
+    String expected = hashingService.hash(Long.toString(orderId));
+    if (!expected.equals(orderHash)) {
+      log.warning("Expected hash for order " + orderId + " is " + expected + "; provided: " + orderHash);
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+          "Unexpected order hash for order: " + orderId);
+
+    }
     Order order = orderService.getOrder(orderId);
     addStandardAttributes(model);
     model.addAttribute("order", order);

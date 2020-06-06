@@ -30,7 +30,6 @@ public class OrderAssignmentRestController {
     }
     throw new ResponseStatusException(HttpStatus.NOT_FOUND,
         "Assigned order was not found for order assignment id: " + orderIdAssignmentId);
-
   }
 
   @GetMapping("/api/assignments/v1/active/{staffId}")

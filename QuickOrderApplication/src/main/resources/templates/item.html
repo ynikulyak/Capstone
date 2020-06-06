@@ -74,9 +74,11 @@
 
 
         <div class="card-body" id="buttons">
-            <a href="/index" class="card-link">Back to Menu</a>
+            <button type="button" class="btn btn-primary"
+                    onclick="document.location='/index';">Continue shopping
+            </button>
             <button type="reset" class="btn btn-warning" onclick="shoppingCart.resetForm();return false;">Cancel</button>
-            <button type="button" class="btn btn-warning" onclick="shoppingCart.addProduct();return false;">Add to Cart</button>
+            <button type="button" class="btn btn-success" onclick="shoppingCart.addProduct();return false;">Add to Cart</button>
         </div>
     </div>
 

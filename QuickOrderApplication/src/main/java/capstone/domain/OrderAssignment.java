@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class OrderAssignment {
 
-  private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("Y-M-d H:m");
+  private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("Y-MM-dd HH:mm");
 
   public Long id;
 

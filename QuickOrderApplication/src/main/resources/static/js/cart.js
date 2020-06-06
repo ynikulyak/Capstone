@@ -168,6 +168,11 @@ class ShoppingCart {
   proceedToCheckout() {
     document.location = this.createCheckoutUrl();
   }
+
+  clearCart() {
+    this.#contents = {};
+    this.save();
+  }
 }
 
 const shoppingCart = new ShoppingCart();
@@ -248,8 +253,12 @@ function initializeFormPage() {
 }
 
 $(document).ready(function() {
-    shoppingCart.restore();
-    shoppingCart.restoreOptions();
+    if (getHttpGetParameter('clearCart') == 'true') {
+      shoppingCart.clearCart();
+    } else {
+      shoppingCart.restore();
+      shoppingCart.restoreOptions();
+    }
     shoppingCart.updateLink();
 
     initializeCartPage();
