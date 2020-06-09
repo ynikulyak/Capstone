@@ -1,12 +1,21 @@
 @charset "UTF-8";
 
+html {
+   height: 100%;
+}
+
+
 body {
-   background: url("/image/bg2.jpeg") no-repeat center center fixed;
+   min-height: 100%;
+   background: url("/image/006.jpg") no-repeat center center fixed;
+   backdrop-filter: blur(5px);
    -webkit-background-size: cover;
    -moz-background-size: cover;
    -o-background-size: cover;
    background-size: cover;
 }
+
+
 * {
 	box-sizing: border-box;
 }
@@ -148,7 +157,7 @@ fieldset {
 
 
 .category-main-link {
-  background-color: #aaa;
+  background-color: #ccc;
 }
 
 .category-main-link:hover {
